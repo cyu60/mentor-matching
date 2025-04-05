@@ -2,7 +2,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Brainstorming & Edge Analysis Tool</title>
+    <title>Mentor Matching Tool</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -390,17 +390,48 @@
       .prd-content.editing [contenteditable]:focus {
         background-color: rgba(79, 70, 229, 0.1);
       }
+
+      .progress {
+        height: 20px;
+        background-color: #e9ecef;
+        border-radius: 10px;
+      }
+      .progress-bar {
+        background-color: #4f46e5;
+        border-radius: 10px;
+      }
+      .metric-item label {
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+      .growth-area-card {
+        border-left: 4px solid #4f46e5;
+        margin-bottom: 1rem;
+      }
+      .recommendation-card {
+        border-left: 4px solid #f97316;
+        margin-bottom: 1rem;
+      }
+      .priority-high {
+        color: #dc2626;
+      }
+      .priority-medium {
+        color: #f97316;
+      }
+      .priority-low {
+        color: #10b981;
+      }
     </style>
   </head>
   <body>
     <div class="app-container">
       <header class="text-center mb-5">
         <h1 class="display-4 fw-bold text-primary mb-3">
-          The Ultimate Ideation Tool
+          Mentor Matching Tool
         </h1>
         <p class="lead">
-          Your all-in-one companion for ideation, problem solving, and building
-          meaningful projects
+          Your companion for finding the perfect mentor match based on your
+          skills, interests, and goals
         </p>
       </header>
 
@@ -478,6 +509,165 @@
         </form>
       </section>
 
+      <!-- Step 2: Skills & Projects -->
+      <section id="skills-section" class="form-section" style="display: none">
+        <div class="section-header">
+          <h2><i class="fas fa-code me-2"></i>Skills & Projects</h2>
+          <p>Tell us about your technical skills and past projects.</p>
+        </div>
+
+        <div class="mb-4">
+          <h5>Current Skills</h5>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="skill-input"
+              placeholder="Enter a skill (e.g., Python, JavaScript, React)"
+            />
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+              id="add-skill-btn"
+            >
+              Add Skill
+            </button>
+          </div>
+          <div id="skills-list"></div>
+        </div>
+
+        <div class="mb-4">
+          <h5>Skills I Want to Learn</h5>
+          <p class="text-muted small">
+            Type and press Enter to add multiple skills
+          </p>
+          <div class="tag-input-container" id="skills-to-learn-container">
+            <input
+              type="text"
+              class="form-control tag-input"
+              id="skills-to-learn-input"
+              placeholder="Skills you want to learn"
+            />
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h5>Projects & Achievements</h5>
+          <p class="text-muted small">
+            Add projects you've worked on or achievements you're proud of
+          </p>
+          <div id="projects-list">
+            <div class="mb-3">
+              <textarea
+                class="form-control mb-2 project-description"
+                rows="2"
+                placeholder="Describe a project or achievement"
+              ></textarea>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger remove-project"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            id="add-project-btn"
+          >
+            <i class="fas fa-plus me-2"></i>Add Another Project
+          </button>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button
+            type="button"
+            class="btn btn-secondary px-4"
+            id="back-to-personal"
+          >
+            <i class="fas fa-arrow-left me-2"></i>Back
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary px-4"
+            id="analyze-edge-btn"
+          >
+            Next: Edge Analysis <i class="fas fa-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- Step 3: Edge Analysis -->
+      <section
+        id="edge-analysis-section"
+        class="form-section"
+        style="display: none"
+      >
+        <div class="section-header">
+          <h2><i class="fas fa-chart-bar me-2"></i>Edge Analysis</h2>
+          <p>Analysis of your skills, strengths, and growth opportunities</p>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Skills Radar</h5>
+                <canvas id="skills-radar-chart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Summary</h5>
+                <p id="analysis-summary" class="card-text"></p>
+                <div
+                  id="strengths-list"
+                  class="list-group list-group-flush mt-3"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Growth Areas</h5>
+                <div id="growth-areas-container"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Recommendations</h5>
+            <div id="recommendations-container"></div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button
+            type="button"
+            class="btn btn-secondary px-4"
+            id="back-to-skills"
+          >
+            <i class="fas fa-arrow-left me-2"></i>Back
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary px-4"
+            id="restart-analysis"
+          >
+            Restart Analysis <i class="fas fa-redo ms-2"></i>
+          </button>
+        </div>
+      </section>
+
       <!-- Loading Overlay -->
       <div class="loading-overlay" id="loading-overlay">
         <div class="spinner mb-3"></div>
@@ -546,190 +736,8 @@
           skills: [],
           skillsToLearn: [],
           projects: [],
-          brainstorming: {
-            work: [],
-            relationships: [],
-            health: [],
-            play: [],
-          },
-          selectedProblems: [],
-          refinedProblem: {},
           edgeAnalysisResult: {},
-          orgBrainstormResult: {},
-          highScore: 0,
         };
-
-        // Timer variables
-        let timerInterval;
-        let timeLeft;
-        let isTimerRunning = false;
-        let initialNoteCount = 0;
-        let currentNoteCount = 0;
-
-        // Timer functions
-        function updateTimerDisplay(seconds) {
-          const minutes = Math.floor(seconds / 60);
-          const remainingSeconds = seconds % 60;
-          $("#timer-minutes").text(String(minutes).padStart(2, "0"));
-          $("#timer-seconds").text(String(remainingSeconds).padStart(2, "0"));
-        }
-
-        function startTimer() {
-          const duration = parseInt($("#timer-duration").val());
-          timeLeft = duration;
-          isTimerRunning = true;
-
-          // Store initial note count
-          initialNoteCount = countTotalNotes();
-          currentNoteCount = initialNoteCount;
-          updateNoteCount();
-
-          // Update UI
-          $(".timer-container").addClass("active");
-          $("#start-timer").hide();
-          $("#reset-timer").show();
-          $("#timer-duration").prop("disabled", true);
-
-          timerInterval = setInterval(() => {
-            timeLeft--;
-            updateTimerDisplay(timeLeft);
-
-            // Update current note count
-            const newCount = countTotalNotes();
-            if (newCount !== currentNoteCount) {
-              currentNoteCount = newCount;
-              updateNoteCount();
-            }
-
-            // Warning when 30 seconds remaining
-            if (timeLeft === 30) {
-              $(".timer-container").removeClass("active").addClass("ending");
-            }
-
-            // Timer finished
-            if (timeLeft <= 0) {
-              endTimer();
-            }
-          }, 1000);
-        }
-
-        function endTimer() {
-          clearInterval(timerInterval);
-          isTimerRunning = false;
-
-          // Calculate final score
-          const finalCount = countTotalNotes() - initialNoteCount;
-
-          // Update high score if needed
-          if (finalCount > userData.highScore) {
-            userData.highScore = finalCount;
-            $("#high-score").text(finalCount);
-            saveToLocalStorage();
-            showSuccessMessage("New high score: " + finalCount + " notes!");
-          }
-
-          // Reset UI
-          $(".timer-container").removeClass("active ending");
-          $("#start-timer").show();
-          $("#reset-timer").hide();
-          $("#timer-duration").prop("disabled", false);
-
-          // Show results
-          const message = `Time's up! You generated ${finalCount} new notes in ${$(
-            "#timer-duration option:selected"
-          ).text()}!`;
-          showTimerResults(message, finalCount);
-        }
-
-        function resetTimer() {
-          clearInterval(timerInterval);
-          isTimerRunning = false;
-          updateTimerDisplay(parseInt($("#timer-duration").val()));
-
-          // Reset UI
-          $(".timer-container").removeClass("active ending");
-          $("#start-timer").show();
-          $("#reset-timer").hide();
-          $("#timer-duration").prop("disabled", false);
-
-          // Reset note count
-          currentNoteCount = countTotalNotes();
-          updateNoteCount();
-        }
-
-        function countTotalNotes() {
-          return (
-            $("#work-items textarea").length +
-            $("#relationships-items textarea").length +
-            $("#health-items textarea").length +
-            $("#play-items textarea").length
-          );
-        }
-
-        function updateNoteCount() {
-          $("#notes-count").text(currentNoteCount);
-        }
-
-        function showTimerResults(message, count) {
-          const resultsHtml = `
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-              <strong>${message}</strong>
-              ${
-                count > 0
-                  ? '<br><small class="text-muted">Keep up the great work!</small>'
-                  : ""
-              }
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          `;
-
-          // Insert the alert before the brainstorm container
-          $(".brainstorm-container").before(resultsHtml);
-        }
-
-        // Timer event listeners
-        $("#start-timer").click(() => {
-          if (!isTimerRunning) {
-            startTimer();
-          }
-        });
-
-        $("#reset-timer").click(() => {
-          resetTimer();
-        });
-
-        $("#timer-duration").change(() => {
-          if (!isTimerRunning) {
-            updateTimerDisplay(parseInt($("#timer-duration").val()));
-          }
-        });
-
-        // Load high score from userData
-        if (userData.highScore) {
-          $("#high-score").text(userData.highScore);
-        }
-
-        // Update note count when notes are added or removed
-        const updateNotesObserver = new MutationObserver((mutations) => {
-          if (isTimerRunning) {
-            const newCount = countTotalNotes();
-            if (newCount !== currentNoteCount) {
-              currentNoteCount = newCount;
-              updateNoteCount();
-            }
-          }
-        });
-
-        // Observe changes in all note containers
-        ["work", "relationships", "health", "play"].forEach((category) => {
-          updateNotesObserver.observe(
-            document.getElementById(`${category}-items`),
-            {
-              childList: true,
-              subtree: true,
-            }
-          );
-        });
 
         // Initialize localStorage if needed
         if (localStorage.getItem("edgeAnalysisData")) {
@@ -742,9 +750,6 @@
         }
 
         // Set up Bootstrap components
-        const problemSelectionModal = new bootstrap.Modal(
-          document.getElementById("problem-selection-modal")
-        );
         const restartModal = new bootstrap.Modal(
           document.getElementById("restart-modal")
         );
@@ -763,257 +768,11 @@
           updateProgressIndicator(1);
         });
 
-        $("#next-to-brainstorm").click(function () {
-          $("#edge-analysis-section").hide();
-          $("#brainstorm-section").show();
-          updateProgressIndicator(3);
-        });
-
         $("#back-to-skills").click(function () {
-          $("#brainstorm-section").hide();
+          $("#edge-analysis-section").hide();
           $("#skills-section").show();
           updateProgressIndicator(2);
         });
-
-        $("#next-to-refinement").click(async function () {
-          saveBrainstorming();
-          showLoading("Analyzing your brainstorming ideas...");
-
-          try {
-            // Prepare payload for BrainstormAnalysis Loop
-            const brainstormPayload = {
-              studentName: $("#name").val() || "Anonymous Student",
-              notes: {
-                work: userData.brainstorming.work || [],
-                relationships: userData.brainstorming.relationships || [],
-                health: userData.brainstorming.health || [],
-                play: userData.brainstorming.play || [],
-              },
-            };
-
-            // Call BrainstormAnalysis Loop
-            const brainstormResponse = await fetch(
-              "https://magicloops.dev/api/loop/878ec25f-139b-4856-9378-5c956b7e7483/run",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(brainstormPayload),
-              }
-            );
-
-            if (!brainstormResponse.ok) {
-              throw new Error("Failed to analyze brainstorming data");
-            }
-
-            const analysisResult = await brainstormResponse.json();
-            userData.brainstormAnalysis = analysisResult;
-
-            // Update analysis section with analysis results
-            updateAnalysisWithResults(analysisResult);
-
-            // Hide brainstorm section and show analysis
-            $("#brainstorm-section").hide();
-            $("#analysis-section").show();
-            updateProgressIndicator(4);
-          } catch (error) {
-            console.error("Error analyzing brainstorming data:", error);
-            showErrorMessage(
-              "Failed to analyze brainstorming data. Please try again."
-            );
-          } finally {
-            hideLoading();
-          }
-        });
-
-        $("#next-to-problem-refinement").click(function () {
-          $("#analysis-section").hide();
-          $("#problem-refinement-section").show();
-          updateProgressIndicator(5);
-        });
-
-        $("#back-to-analysis").click(function () {
-          $("#problem-refinement-section").hide();
-          $("#analysis-section").show();
-          updateProgressIndicator(4);
-        });
-
-        $("#back-to-brainstorm").click(function () {
-          $("#analysis-section").hide();
-          $("#brainstorm-section").show();
-          updateProgressIndicator(3);
-        });
-
-        function updateAnalysisWithResults(analysis) {
-          // Create HTML for themes section
-          const themesHtml = `
-            <div class="card mb-4">
-              <div class="card-header bg-primary text-white">
-                <h4 class="h5 mb-0"><i class="fas fa-sitemap me-2"></i>Identified Themes</h4>
-              </div>
-              <div class="card-body">
-                <div class="themes-list">
-                  ${analysis.themes
-                    .map(
-                      (theme) => `
-                    <div class="theme-item mb-3">
-                      <h5 class="h6 mb-2">${theme.name}</h5>
-                      <p class="text-muted mb-2">${theme.description}</p>
-                      <div class="related-notes small">
-                        <strong>Related Notes:</strong>
-                        <ul class="list-unstyled ms-3">
-                          ${theme.relatedNotes
-                            .map(
-                              (note) => `
-                            <li><i class="fas fa-angle-right me-2"></i>${note}</li>
-                          `
-                            )
-                            .join("")}
-                        </ul>
-                      </div>
-                    </div>
-                  `
-                    )
-                    .join("")}
-                </div>
-              </div>
-            </div>
-          `;
-
-          // Create HTML for How Might We statements
-          const hmwHtml = `
-            <div class="card mb-4">
-              <div class="card-header bg-success text-white">
-                <h4 class="h5 mb-0"><i class="fas fa-lightbulb me-2"></i>How Might We Statements</h4>
-              </div>
-              <div class="card-body">
-                <div class="hmw-list">
-                  ${analysis.howMightWe
-                    .map(
-                      (hmw) => `
-                    <div class="hmw-item mb-3">
-                      <h5 class="h6 mb-2">${hmw.statement}</h5>
-                      <p class="text-muted mb-2">${hmw.context}</p>
-                      <div class="opportunity-areas small">
-                        <strong>Opportunity Areas:</strong>
-                        <ul class="list-unstyled ms-3">
-                          ${hmw.opportunities
-                            .map(
-                              (opp) => `
-                            <li><i class="fas fa-check me-2"></i>${opp}</li>
-                          `
-                            )
-                            .join("")}
-                        </ul>
-                      </div>
-                    </div>
-                  `
-                    )
-                    .join("")}
-                </div>
-              </div>
-            </div>
-          `;
-
-          // Create HTML for additional insights
-          const insightsHtml = `
-            <div class="card mb-4">
-              <div class="card-header bg-info text-white">
-                <h4 class="h5 mb-0"><i class="fas fa-brain me-2"></i>Additional Insights</h4>
-              </div>
-              <div class="card-body">
-                <div class="insights-list">
-                  ${analysis.insights
-                    .map(
-                      (insight) => `
-                    <div class="insight-item mb-3">
-                      <h5 class="h6 mb-2">${insight.title}</h5>
-                      <p class="text-muted">${insight.description}</p>
-                      ${
-                        insight.sources
-                          ? `
-                        <div class="sources small">
-                          <strong>Related Sources:</strong>
-                          <ul class="list-unstyled ms-3">
-                            ${insight.sources
-                              .map(
-                                (source) => `
-                              <li><i class="fas fa-link me-2"></i><a href="${source.url}" target="_blank">${source.title}</a></li>
-                            `
-                              )
-                              .join("")}
-                          </ul>
-                        </div>
-                      `
-                          : ""
-                      }
-                    </div>
-                  `
-                    )
-                    .join("")}
-                </div>
-              </div>
-            </div>
-          `;
-
-          // Insert all analysis sections
-          $(".analysis-results")
-            .empty()
-            .append(themesHtml + hmwHtml + insightsHtml);
-
-          // Add HMW statements dropdown to problem refinement section
-          const problemSelect = $(
-            '<select class="form-select mb-3" id="hmw-select"></select>'
-          ).append(
-            '<option value="">Select a "How Might We" statement...</option>'
-          );
-
-          analysis.howMightWe.forEach((hmw, index) => {
-            problemSelect.append(
-              `<option value="${index}">${hmw.statement}</option>`
-            );
-          });
-
-          // Add event listener to populate problem statement when HMW is selected
-          problemSelect.on("change", function () {
-            const selectedIndex = $(this).val();
-            if (selectedIndex !== "") {
-              const selectedHMW = analysis.howMightWe[selectedIndex];
-              $("#problem-statement").val(selectedHMW.statement);
-              $("#why-important").val(selectedHMW.context);
-
-              // Update opportunity areas
-              const opportunityList = $("#opportunity-areas-list");
-              opportunityList.empty();
-              selectedHMW.opportunities.forEach((opportunity) => {
-                opportunityList.append(`
-                  <li><i class="fas fa-lightbulb text-warning me-2"></i>${opportunity}</li>
-                `);
-              });
-              $("#opportunity-areas").show();
-            } else {
-              $("#opportunity-areas").hide();
-              $("#opportunity-areas-list").empty();
-            }
-          });
-
-          // Insert the select before the problem statement textarea
-          $("#problem-statement").before(problemSelect);
-        }
-
-        function showErrorMessage(message) {
-          const errorHtml = `
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <i class="fas fa-exclamation-circle me-2"></i>${message}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          `;
-
-          $(".brainstorm-container").before(errorHtml);
-        }
-
-        // ... existing code ...
 
         // Update progress indicator
         function updateProgressIndicator(step) {
@@ -1070,7 +829,7 @@
                   <button type="button" class="btn-close remove-skill" aria-label="Remove"></button>
                 </div>
                 <div class="skill-level" data-skill="${skillName}">
-                    <span class="ms-2 text-muted small">Beginner</span>
+                  <span class="ms-2 text-muted small">Beginner</span>
                   <div class="skill-level-circle" data-level="1"></div>
                   <div class="skill-level-circle" data-level="2"></div>
                   <div class="skill-level-circle" data-level="3"></div>
@@ -1138,647 +897,7 @@
           $("#projects-list").append(projectElement);
         }
 
-        // Brainstorming section
-        $(".brainstorm-column button").click(function () {
-          const category = $(this).data("category");
-          addBrainstormItem(category);
-        });
-
-        function addBrainstormItem(category, text = "") {
-          const itemElement = $(`
-            <div class="sticky-note sticky-note-${category}" draggable="true">
-              <textarea class="form-control border-0 bg-transparent" rows="2" placeholder="Type your idea here...">${text}</textarea>
-            </div>
-          `);
-
-          // Setup drag and drop for sticky notes
-          itemElement[0].addEventListener("dragstart", handleDragStart);
-          itemElement[0].addEventListener("dragend", handleDragEnd);
-
-          $(`#${category}-items`).append(itemElement);
-          itemElement.find("textarea").focus();
-        }
-
-        // Drag and drop for sticky notes
-        let draggedItem = null;
-
-        function handleDragStart(e) {
-          this.classList.add("dragging");
-          draggedItem = this;
-          e.dataTransfer.effectAllowed = "move";
-          e.dataTransfer.setData("text/html", this.innerHTML);
-        }
-
-        function handleDragEnd(e) {
-          this.classList.remove("dragging");
-          draggedItem = null;
-        }
-
-        // Add drag and drop listeners to brainstorm containers
-        document.querySelectorAll(".brainstorm-items").forEach((container) => {
-          container.addEventListener("dragover", handleDragOver);
-          container.addEventListener("dragenter", handleDragEnter);
-          container.addEventListener("dragleave", handleDragLeave);
-          container.addEventListener("drop", handleDrop);
-        });
-
-        function handleDragOver(e) {
-          e.preventDefault();
-          return false;
-        }
-
-        function handleDragEnter(e) {
-          this.classList.add("over");
-        }
-
-        function handleDragLeave(e) {
-          this.classList.remove("over");
-        }
-
-        function handleDrop(e) {
-          e.stopPropagation();
-          e.preventDefault();
-
-          this.classList.remove("over");
-
-          if (draggedItem) {
-            if (this !== draggedItem.parentNode) {
-              // If dropping in a different container, move the item
-              this.appendChild(draggedItem);
-            } else {
-              // If dropping in the same container, re-order
-              const afterElement = getDragAfterElement(this, e.clientY);
-              if (afterElement == null) {
-                this.appendChild(draggedItem);
-              } else {
-                this.insertBefore(draggedItem, afterElement);
-              }
-            }
-          }
-          return false;
-        }
-
-        function getDragAfterElement(container, y) {
-          const draggableElements = [
-            ...container.querySelectorAll(".sticky-note:not(.dragging)"),
-          ];
-
-          return draggableElements.reduce(
-            (closest, child) => {
-              const box = child.getBoundingClientRect();
-              const offset = y - box.top - box.height / 2;
-
-              if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: child };
-              } else {
-                return closest;
-              }
-            },
-            { offset: Number.NEGATIVE_INFINITY }
-          ).element;
-        }
-
-        // Problem selection
-        $("#select-problems-btn").click(function () {
-          populateProblemSelectionModal();
-          problemSelectionModal.show();
-        });
-
-        function populateProblemSelectionModal() {
-          $("#problem-selection-list").empty();
-
-          // Add problems from brainstorming
-          const addProblemsFromCategory = (category, displayName) => {
-            const problems = [];
-
-            $(`#${category}-items textarea`).each(function () {
-              const text = $(this).val().trim();
-              if (text) {
-                problems.push(text);
-              }
-            });
-
-            if (problems.length > 0) {
-              const categoryHeader = $(
-                `<h5 class="mt-3 mb-2">${displayName}</h5>`
-              );
-              $("#problem-selection-list").append(categoryHeader);
-
-              problems.forEach((problem) => {
-                const problemId =
-                  "problem-" + Math.random().toString(36).substr(2, 9);
-                const problemEl = $(`
-                  <div class="form-check mb-2">
-                    <input class="form-check-input problem-checkbox" type="checkbox" value="${problem}" id="${problemId}">
-                    <label class="form-check-label" for="${problemId}">
-                      ${problem}
-                    </label>
-                  </div>
-                `);
-                $("#problem-selection-list").append(problemEl);
-              });
-            }
-          };
-
-          addProblemsFromCategory("work", "Work/Education");
-          addProblemsFromCategory("relationships", "Relationships");
-          addProblemsFromCategory("health", "Health");
-          addProblemsFromCategory("play", "Play/Leisure");
-
-          // Check any previously selected problems
-          userData.selectedProblems.forEach((problem) => {
-            $(`.problem-checkbox[value="${problem}"]`).prop("checked", true);
-          });
-        }
-
-        $("#confirm-problem-selection").click(function () {
-          const selectedProblems = [];
-          $(".problem-checkbox:checked").each(function () {
-            selectedProblems.push($(this).val());
-          });
-
-          if (selectedProblems.length > 3) {
-            alert("Please select no more than 3 problems.");
-            return;
-          }
-
-          userData.selectedProblems = selectedProblems;
-          saveToLocalStorage();
-          updateSelectedProblems();
-          problemSelectionModal.hide();
-        });
-
-        function updateSelectedProblems() {
-          $("#selected-problems").empty();
-
-          userData.selectedProblems.forEach((problem) => {
-            const problemEl = $(`
-              <div class="card mb-3">
-                <div class="card-body">
-                  <p class="card-text">${problem}</p>
-                  <button type="button" class="btn btn-sm btn-outline-danger remove-selected-problem" data-problem="${problem}">Remove</button>
-                </div>
-              </div>
-            `);
-
-            problemEl.find(".remove-selected-problem").click(function () {
-              const problemToRemove = $(this).data("problem");
-              userData.selectedProblems = userData.selectedProblems.filter(
-                (p) => p !== problemToRemove
-              );
-              saveToLocalStorage();
-              updateSelectedProblems();
-            });
-
-            $("#selected-problems").append(problemEl);
-          });
-        }
-
-        // Export functionality with Magic Loops integration
-        $("#export-btn").click(async function () {
-          saveRefinedProblem();
-          showLoading("Generating your report...");
-
-          // Prepare payload for EdgeAnalysisLoop
-          const edgePayload = {
-            name: userData.personalInfo.name || "",
-            age: userData.personalInfo.age || "",
-            interests: userData.personalInfo.interests || [],
-            skills: userData.skills.map((s) => s.name),
-            pastProjects: userData.projects || [],
-            learningGoals:
-              userData.skillsToLearn && userData.skillsToLearn[0]
-                ? userData.skillsToLearn[0]
-                : "", // using first skill to learn as learning goal
-          };
-
-          // Prepare payload for BrainstormOrg Loop
-          const brainstormPayload = {
-            work: userData.brainstorming.work || [],
-            relationships: userData.brainstorming.relationships || [],
-            health: userData.brainstorming.health || [],
-            play: userData.brainstorming.play || [],
-          };
-
-          try {
-            // Call EdgeAnalysisLoop
-            const edgeResponse = await fetch(
-              "https://magicloops.dev/api/loop/66a39aa2-5117-44a0-8ea3-7341019153f2/run",
-              {
-                method: "POST",
-                body: JSON.stringify(edgePayload),
-              }
-            );
-            const edgeResult = await edgeResponse.json();
-            userData.edgeAnalysisResult = edgeResult;
-
-            // Call BrainstormOrg Loop
-            const brainstormResponse = await fetch(
-              "https://magicloops.dev/api/loop/878ec25f-139b-4856-9378-5c956b7e7483/run",
-              {
-                method: "POST",
-                body: JSON.stringify(brainstormPayload),
-              }
-            );
-            const brainstormResult = await brainstormResponse.json();
-            userData.orgBrainstormResult = brainstormResult;
-          } catch (error) {
-            console.error("Error calling Magic Loops: ", error);
-          }
-
-          // Generate export content including loop results
-          const exportContent = generateExportContent();
-          copyToClipboard(exportContent);
-          saveToLocalStorage();
-          hideLoading();
-          showSuccessMessage("Report copied to clipboard!");
-
-          // Show restart modal after a delay
-          setTimeout(() => {
-            restartModal.show();
-          }, 1500);
-        });
-
-        $("#confirm-restart").click(function () {
-          clearData();
-          restartModal.hide();
-          window.location.reload();
-        });
-
-        function generateExportContent() {
-          let content = "# BRAINSTORMING & EDGE ANALYSIS RESULTS\n\n";
-
-          // Personal Info
-          content += "## PERSONAL INFORMATION\n";
-          content += `Name: ${userData.personalInfo.name || "Not provided"}\n`;
-          content += `Age: ${userData.personalInfo.age || "Not provided"}\n\n`;
-
-          // Interests
-          content += "## INTERESTS & HOBBIES\n";
-          if (
-            userData.personalInfo.interests &&
-            userData.personalInfo.interests.length > 0
-          ) {
-            userData.personalInfo.interests.forEach((interest) => {
-              content += `- ${interest}\n`;
-            });
-          } else {
-            content += "No interests provided.\n";
-          }
-          content += "\n";
-
-          // Skills
-          content += "## SKILLS\n";
-          if (userData.skills && userData.skills.length > 0) {
-            userData.skills.forEach((skill) => {
-              const stars =
-                "★".repeat(skill.level) + "☆".repeat(5 - skill.level);
-              content += `- ${skill.name} (${stars})\n`;
-            });
-          } else {
-            content += "No skills provided.\n";
-          }
-          content += "\n";
-
-          // Skills to Learn
-          content += "## SKILLS TO LEARN\n";
-          if (userData.skillsToLearn && userData.skillsToLearn.length > 0) {
-            userData.skillsToLearn.forEach((skill) => {
-              content += `- ${skill}\n`;
-            });
-          } else {
-            content += "No skills to learn provided.\n";
-          }
-          content += "\n";
-
-          // Projects
-          content += "## PAST PROJECTS & ACHIEVEMENTS\n";
-          if (userData.projects && userData.projects.length > 0) {
-            userData.projects.forEach((project, index) => {
-              content += `${index + 1}. ${project}\n`;
-            });
-          } else {
-            content += "No projects provided.\n";
-          }
-          content += "\n";
-
-          // Brainstorming
-          content += "## BRAINSTORMING RESULTS\n\n";
-
-          // Work
-          content += "### Work/Education Problems\n";
-          if (
-            userData.brainstorming.work &&
-            userData.brainstorming.work.length > 0
-          ) {
-            userData.brainstorming.work.forEach((item) => {
-              content += `- ${item}\n`;
-            });
-          } else {
-            content += "No work/education problems identified.\n";
-          }
-          content += "\n";
-
-          // Relationships
-          content += "### Relationship Problems\n";
-          if (
-            userData.brainstorming.relationships &&
-            userData.brainstorming.relationships.length > 0
-          ) {
-            userData.brainstorming.relationships.forEach((item) => {
-              content += `- ${item}\n`;
-            });
-          } else {
-            content += "No relationship problems identified.\n";
-          }
-          content += "\n";
-
-          // Health
-          content += "### Health Problems\n";
-          if (
-            userData.brainstorming.health &&
-            userData.brainstorming.health.length > 0
-          ) {
-            userData.brainstorming.health.forEach((item) => {
-              content += `- ${item}\n`;
-            });
-          } else {
-            content += "No health problems identified.\n";
-          }
-          content += "\n";
-
-          // Play
-          content += "### Play/Leisure Problems\n";
-          if (
-            userData.brainstorming.play &&
-            userData.brainstorming.play.length > 0
-          ) {
-            userData.brainstorming.play.forEach((item) => {
-              content += `- ${item}\n`;
-            });
-          } else {
-            content += "No play/leisure problems identified.\n";
-          }
-          content += "\n";
-
-          // Selected Problems
-          content += "## SELECTED PROBLEMS\n";
-          if (
-            userData.selectedProblems &&
-            userData.selectedProblems.length > 0
-          ) {
-            userData.selectedProblems.forEach((problem, index) => {
-              content += `${index + 1}. ${problem}\n`;
-            });
-          } else {
-            content += "No problems selected.\n";
-          }
-          content += "\n";
-
-          // Refined Problem
-          content += "## REFINED PROBLEM\n";
-          content += `Problem Statement: ${
-            userData.refinedProblem.statement || "Not provided"
-          }\n`;
-          content += `Who is Affected: ${
-            userData.refinedProblem.whoAffected || "Not provided"
-          }\n`;
-          content += `Why It's Important: ${
-            userData.refinedProblem.whyImportant || "Not provided"
-          }\n`;
-          content += `Initial Solution Ideas: ${
-            userData.refinedProblem.solutionIdeas || "Not provided"
-          }\n\n`;
-
-          // Magic Loops -- EdgeAnalysisLoop
-          content += "## EDGE ANALYSIS\n";
-          if (
-            userData.edgeAnalysisResult &&
-            userData.edgeAnalysisResult.analysis
-          ) {
-            content += `${userData.edgeAnalysisResult.analysis}\n\n`;
-          } else {
-            content += "No edge analysis result available.\n\n";
-          }
-
-          // Magic Loops -- BrainstormOrg
-          content += "## ORGANIZED BRAINSTORMING IDEAS\n";
-          if (
-            userData.orgBrainstormResult &&
-            userData.orgBrainstormResult.organizedIdeas
-          ) {
-            Object.entries(userData.orgBrainstormResult.organizedIdeas).forEach(
-              ([key, idea]) => {
-                content += `- ${key}: ${idea}\n`;
-              }
-            );
-          } else {
-            content += "No organized brainstorming ideas available.\n";
-          }
-          content += "\n";
-
-          // Next Steps
-          content += "## NEXT STEPS\n";
-          content +=
-            "1. Research your problem area more deeply to understand its causes and existing solutions.\n";
-          content +=
-            "2. Talk to 3-5 people who experience this problem to gain insights.\n";
-          content +=
-            "3. Sketch 2-3 potential solution concepts based on your research.\n";
-          content +=
-            '4. Identify what unique skills or perspective you bring to this problem (your "edge").\n\n';
-
-          content +=
-            "--- Generated by the Brainstorming & Edge Analysis Tool ---";
-
-          return content;
-        }
-
-        function copyToClipboard(text) {
-          const textarea = document.createElement("textarea");
-          textarea.value = text;
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand("copy");
-          document.body.removeChild(textarea);
-        }
-
-        // Save functions
-        function savePersonalInfo() {
-          userData.personalInfo = {
-            name: $("#name").val().trim(),
-            age: $("#age").val().trim(),
-            interests: [],
-          };
-
-          // Get interests
-          $("#interests-container .tag").each(function () {
-            const interest = $(this).text().trim().replace("×", "");
-            userData.personalInfo.interests.push(interest);
-          });
-
-          saveToLocalStorage();
-        }
-
-        function saveSkillsAndProjects() {
-          // Skills already saved when rated
-
-          // Save skills to learn
-          userData.skillsToLearn = [];
-          $("#skills-to-learn-container .tag").each(function () {
-            const skill = $(this).text().trim().replace("×", "");
-            userData.skillsToLearn.push(skill);
-          });
-
-          // Save projects
-          userData.projects = [];
-          $(".project-description").each(function () {
-            const project = $(this).val().trim();
-            if (project) {
-              userData.projects.push(project);
-            }
-          });
-
-          saveToLocalStorage();
-        }
-
-        function saveBrainstorming() {
-          userData.brainstorming = {
-            work: [],
-            relationships: [],
-            health: [],
-            play: [],
-          };
-
-          // For each category, get notes
-          ["work", "relationships", "health", "play"].forEach((category) => {
-            $(`#${category}-items textarea`).each(function () {
-              const note = $(this).val().trim();
-              if (note) {
-                userData.brainstorming[category].push(note);
-              }
-            });
-          });
-
-          saveToLocalStorage();
-        }
-
-        function saveRefinedProblem() {
-          userData.refinedProblem = {
-            statement: $("#problem-statement").val().trim(),
-            whoAffected: $("#who-affected").val().trim(),
-            whyImportant: $("#why-important").val().trim(),
-            solutionIdeas: $("#solution-ideas").val().trim(),
-          };
-
-          saveToLocalStorage();
-        }
-
-        function saveToLocalStorage() {
-          localStorage.setItem("edgeAnalysisData", JSON.stringify(userData));
-        }
-
-        // Load saved data
-        function loadSavedData() {
-          // Personal info
-          if (userData.personalInfo) {
-            $("#name").val(userData.personalInfo.name || "");
-            $("#age").val(userData.personalInfo.age || "");
-
-            if (userData.personalInfo.interests) {
-              userData.personalInfo.interests.forEach((interest) => {
-                addTag("interests-container", interest);
-              });
-            }
-          }
-
-          // Skills
-          if (userData.skills) {
-            userData.skills.forEach((skill) => {
-              addSkill(skill.name);
-              // Set skill level
-              const skillLevel = $(`.skill-level[data-skill="${skill.name}"]`);
-              if (skillLevel.length > 0 && skill.level) {
-                skillLevel.find(".skill-level-circle").each(function () {
-                  if ($(this).data("level") <= skill.level) {
-                    $(this).addClass("filled");
-                  }
-                });
-              }
-            });
-          }
-
-          // Skills to learn
-          if (userData.skillsToLearn) {
-            userData.skillsToLearn.forEach((skill) => {
-              addTag("skills-to-learn-container", skill);
-            });
-          }
-
-          // Projects
-          if (userData.projects) {
-            $("#projects-list").empty();
-            userData.projects.forEach((project) => {
-              addProject(project);
-            });
-          }
-
-          // Brainstorming
-          if (userData.brainstorming) {
-            ["work", "relationships", "health", "play"].forEach((category) => {
-              $(`#${category}-items`).empty();
-              if (userData.brainstorming[category]) {
-                userData.brainstorming[category].forEach((note) => {
-                  addBrainstormItem(category, note);
-                });
-              }
-            });
-          }
-
-          // Selected problems
-          if (userData.selectedProblems) {
-            updateSelectedProblems();
-          }
-
-          // Refined problem
-          if (userData.refinedProblem) {
-            $("#problem-statement").val(
-              userData.refinedProblem.statement || ""
-            );
-            $("#who-affected").val(userData.refinedProblem.whoAffected || "");
-            $("#why-important").val(userData.refinedProblem.whyImportant || "");
-            $("#solution-ideas").val(
-              userData.refinedProblem.solutionIdeas || ""
-            );
-          }
-        }
-
-        // UI Helpers
-        function showLoading(message) {
-          $("#loading-text").text(message || "Processing...");
-          $("#loading-overlay").addClass("active");
-        }
-
-        function hideLoading() {
-          $("#loading-overlay").removeClass("active");
-        }
-
-        function showSuccessMessage(message) {
-          $("#success-text").text(message);
-          $("#success-message").addClass("show");
-
-          setTimeout(() => {
-            $("#success-message").removeClass("show");
-          }, 3000);
-        }
-
-        function clearData() {
-          localStorage.removeItem("edgeAnalysisData");
-        }
-
-        // Edge Analysis Chart
-        let skillsRadarChart = null;
-
+        // Edge Analysis
         $("#analyze-edge-btn").click(async function () {
           saveSkillsAndProjects();
           showLoading("Analyzing your edge...");
@@ -1790,9 +909,13 @@
               name: $("#name").val() || "Anonymous Student",
               age: $("#age").val() || "",
               interests: userData.personalInfo.interests || [],
-              skills: userData.skills || [],
-              pastProjects: userData.projects || [],
-              learningGoals: userData.skillsToLearn || [],
+              skills:
+                userData.skills.map((skill) => ({
+                  name: skill.name,
+                  proficiency: skill.level,
+                })) || [],
+              skillsToLearn: userData.skillsToLearn || [],
+              projects: userData.projects || [],
             };
 
             // Call EdgeAnalysisLoop
@@ -1802,31 +925,120 @@
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
+                  Accept: "application/json",
                 },
                 body: JSON.stringify(edgePayload),
               }
             );
+
+            if (!edgeResponse.ok) {
+              throw new Error(`HTTP error! status: ${edgeResponse.status}`);
+            }
+
             const edgeResult = await edgeResponse.json();
-            userData.edgeAnalysisResult = edgeResult;
 
             // Update UI with analysis results
-            updateEdgeAnalysis(edgeResult);
+            if (edgeResult) {
+              userData.edgeAnalysisResult = edgeResult;
+
+              // Display summary
+              $("#analysis-summary").text(edgeResult.summary);
+
+              // Display strengths
+              const strengthsList = $("#strengths-list");
+              strengthsList.empty();
+              edgeResult.strengths.forEach((strength) => {
+                strengthsList.append(`
+                  <li class="list-group-item">
+                    <i class="fas fa-check-circle text-success me-2"></i>${strength}
+                  </li>
+                `);
+              });
+
+              // Display growth areas
+              const growthAreasContainer = $("#growth-areas-container");
+              growthAreasContainer.empty();
+              edgeResult.growth_areas.forEach((area) => {
+                growthAreasContainer.append(`
+                  <div class="card growth-area-card">
+                    <div class="card-body">
+                      <h6 class="card-title">${area.skill} (${
+                  area.category
+                })</h6>
+                      <p class="card-text">
+                        <span class="badge bg-primary">Current Level: ${
+                          area.current_level
+                        }</span>
+                        <span class="badge bg-${
+                          area.recommended_focus.toLowerCase() === "high"
+                            ? "danger"
+                            : "warning"
+                        }">
+                          ${area.recommended_focus} Priority
+                        </span>
+                      </p>
+                      <p class="card-text text-muted">${area.reason}</p>
+                    </div>
+                  </div>
+                `);
+              });
+
+              // Display recommendations
+              const recommendationsContainer = $("#recommendations-container");
+              recommendationsContainer.empty();
+              edgeResult.recommendations.forEach((rec) => {
+                const nextStepsList = rec.next_steps
+                  .map(
+                    (step) =>
+                      `<li class="list-group-item"><i class="fas fa-arrow-right me-2"></i>${step}</li>`
+                  )
+                  .join("");
+
+                recommendationsContainer.append(`
+                  <div class="card recommendation-card">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        ${rec.title}
+                        <span class="badge bg-${
+                          rec.priority.toLowerCase() === "high"
+                            ? "danger"
+                            : "warning"
+                        } ms-2">
+                          ${rec.priority} Priority
+                        </span>
+                      </h6>
+                      <p class="card-text">${rec.description}</p>
+                      <h6 class="mt-3">Next Steps:</h6>
+                      <ul class="list-group list-group-flush">
+                        ${nextStepsList}
+                      </ul>
+                    </div>
+                  </div>
+                `);
+              });
+
+              // Create radar chart
+              createSkillsRadarChart(edgeResult.metrics);
+            }
 
             // Show edge analysis section
             $("#skills-section").hide();
             $("#edge-analysis-section").show();
-
-            // Create radar chart
-            createSkillsRadarChart();
+            updateProgressIndicator(3);
           } catch (error) {
             console.error("Error analyzing edge:", error);
-            alert("There was an error analyzing your edge. Please try again.");
+            alert(
+              "There was an error analyzing your edge. Please try again. Error: " +
+                error.message
+            );
           } finally {
             hideLoading();
           }
         });
 
-        function createSkillsRadarChart() {
+        let skillsRadarChart = null;
+
+        function createSkillsRadarChart(metrics) {
           const ctx = document
             .getElementById("skills-radar-chart")
             .getContext("2d");
@@ -1835,9 +1047,6 @@
           if (skillsRadarChart) {
             skillsRadarChart.destroy();
           }
-
-          // Get metrics from the analysis result
-          const metrics = userData.edgeAnalysisResult.metrics;
 
           // Format labels to be capitalized
           const formatLabel = (label) => {
@@ -1904,811 +1113,118 @@
               },
             },
           });
-
-          // Log the parsed data for verification
-          console.log("Radar Chart Data:", {
-            labels: labels,
-            values: values,
-          });
         }
 
-        function updateEdgeAnalysis(analysisResult) {
-          // Update edge profile text
-          const edgeProfileHtml = `
-            <div class="edge-profile">
-              <p class="lead mb-3">${
-                analysisResult.summary ||
-                "Based on your input, here's an analysis of your unique edge:"
-              }</p>
-
-              <h4 class="h6 mt-4 mb-3">Core Strengths</h4>
-              <ul class="list-group list-group-flush mb-4">
-                ${(analysisResult.strengths || [])
-                  .map(
-                    (strength) =>
-                      `<li class="list-group-item">
-                    <i class="fas fa-star text-warning me-2"></i>${strength}
-                  </li>`
-                  )
-                  .join("")}
-              </ul>
-            </div>
-          `;
-          $("#edge-analysis-text").html(edgeProfileHtml);
-
-          // Update growth areas and recommendations
-          const growthRecommendationsHtml = `
-            <div class="growth-recommendations">
-              ${(analysisResult.growth_areas || [])
-                .map(
-                  (area) => `
-                <div class="card mb-4 border-${
-                  area.recommended_focus === "High" ? "danger" : "warning"
-                } border-opacity-50">
-                  <div class="card-header bg-transparent">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <h5 class="h6 mb-0">
-                        <i class="fas fa-arrow-up text-${
-                          area.recommended_focus === "High"
-                            ? "danger"
-                            : "warning"
-                        } me-2"></i>
-                        ${area.skill}
-                      </h5>
-                      <span class="badge bg-${
-                        area.recommended_focus === "High" ? "danger" : "warning"
-                      }">
-                        ${area.recommended_focus} Priority
-                      </span>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <div class="mb-3">
-                      <div class="d-flex justify-content-between align-items-center mb-1">
-                        <small>Current Level</small>
-                        <small>${area.current_level}/5</small>
-                      </div>
-                      <div class="progress" style="height: 8px;">
-                        <div class="progress-bar bg-${
-                          area.recommended_focus === "High"
-                            ? "danger"
-                            : "warning"
-                        }"
-                             role="progressbar"
-                             style="width: ${(area.current_level / 5) * 100}%;">
-                        </div>
-                      </div>
-                    </div>
-                    <p class="card-text text-muted small">${area.reason}</p>
-                    ${
-                      area.recommended_focus === "High"
-                        ? `
-                      <div class="recommended-steps mt-3">
-                        <small class="text-muted d-block mb-2">Recommended Next Steps:</small>
-                        <ul class="list-unstyled mb-0 small">
-                          ${(analysisResult.recommendations || [])
-                            .filter((rec) =>
-                              rec.title
-                                .toLowerCase()
-                                .includes(area.skill.toLowerCase())
-                            )
-                            .map((rec) =>
-                              rec.next_steps
-                                .map(
-                                  (step) =>
-                                    `<li class="mb-1">
-                                <i class="fas fa-check text-success me-2"></i>${step}
-                              </li>`
-                                )
-                                .join("")
-                            )}
-                        </ul>
-                      </div>
-                    `
-                        : ""
-                    }
-                  </div>
-                </div>
-              `
-                )
-                .join("")}
-            </div>
-          `;
-          $("#growth-recommendations").html(growthRecommendationsHtml);
-
-          // Initialize copy and export buttons
-          initializeProfileActions();
-        }
-
-        function initializeProfileActions() {
-          // Copy profile functionality
-          $("#copy-profile-btn").click(function () {
-            const analysisResult = userData.edgeAnalysisResult;
-            let profileText = `EDGE ANALYSIS PROFILE\n\n`;
-
-            // Add summary
-            profileText += `Summary:\n${analysisResult.summary}\n\n`;
-
-            // Add metrics
-            profileText += `Core Metrics:\n`;
-            Object.entries(analysisResult.metrics).forEach(([key, value]) => {
-              profileText += `${
-                key.charAt(0).toUpperCase() + key.slice(1)
-              }: ${value}/5\n`;
-            });
-            profileText += "\n";
-
-            // Add strengths
-            profileText += `Strengths:\n`;
-            analysisResult.strengths.forEach((strength) => {
-              profileText += `• ${strength}\n`;
-            });
-            profileText += "\n";
-
-            // Add growth areas
-            profileText += `Growth Areas:\n`;
-            analysisResult.growth_areas.forEach((area) => {
-              profileText += `• ${area.skill} (Current Level: ${area.current_level}/5)\n`;
-              profileText += `  Reason: ${area.reason}\n`;
-            });
-            profileText += "\n";
-
-            // Add recommendations
-            profileText += `Recommendations:\n`;
-            analysisResult.recommendations.forEach((rec) => {
-              profileText += `• ${rec.title} (Priority: ${rec.priority})\n`;
-              profileText += `  ${rec.description}\n`;
-              rec.next_steps.forEach((step) => {
-                profileText += `  - ${step}\n`;
-              });
-              profileText += "\n";
-            });
-
-            // Copy to clipboard
-            navigator.clipboard
-              .writeText(profileText)
-              .then(() => {
-                showSuccessMessage("Profile copied to clipboard!");
-              })
-              .catch((err) => {
-                console.error("Failed to copy:", err);
-                alert("Failed to copy profile. Please try again.");
-              });
-          });
-
-          // Export PDF functionality
-          $("#export-pdf-btn").click(function () {
-            // Get the current section being displayed
-            const currentSection = document.getElementById(
-              "edge-analysis-section"
-            );
-
-            // Add temporary class for PDF export
-            currentSection.classList.add("pdf-export");
-
-            const opt = {
-              margin: [0, 20, 20, 20], // Increased top margin from 40 to 80
-              filename: "edge-analysis-profile.pdf",
-              image: { type: "jpeg", quality: 1 },
-              html2canvas: {
-                scale: 2,
-                useCORS: true,
-                scrollY: -window.scrollY,
-                windowWidth: currentSection.scrollWidth,
-                windowHeight: currentSection.scrollHeight, // Added extra height to account for top margin
-                logging: false,
-                onclone: function (clonedDoc) {
-                  // Get the cloned section
-                  const clonedSection = clonedDoc.querySelector(".pdf-export");
-
-                  // Make sure the section is visible
-                  clonedSection.style.display = "block";
-                  clonedSection.style.paddingTop = "10px"; // Added padding to push content down
-
-                  // Convert two-column layout to single column
-                  const row = clonedSection.querySelector(".row");
-                  if (row) {
-                    const columns = row.querySelectorAll(".col-md-6");
-                    columns.forEach((col) => {
-                      col.className = "col-12 mb-4";
-                    });
-                  }
-
-                  // Ensure proper styling
-                  clonedSection.style.width = "100%";
-                  clonedSection.style.height = "auto";
-                  clonedSection.style.overflow = "visible";
-                },
-              },
-              jsPDF: {
-                unit: "px",
-                format: [
-                  currentSection.offsetWidth * 2,
-                  currentSection.offsetHeight * 2,
-                ],
-                orientation: "portrait",
-                hotfixes: ["px_scaling"],
-              },
-            };
-
-            // Add print-specific styles
-            const style = document.createElement("style");
-            style.textContent = `
-              @media print {
-                .pdf-export {
-                  background: white !important;
-                  padding: 20px !important;
-                  min-height: 100% !important;
-                }
-                .pdf-export .row {
-                  display: block !important;
-                }
-                .pdf-export .col-md-6 {
-                  width: 100% !important;
-                  max-width: 100% !important;
-                  flex: none !important;
-                }
-                .pdf-export * {
-                  print-color-adjust: exact !important;
-                  -webkit-print-color-adjust: exact !important;
-                }
-                .pdf-export .progress-bar,
-                .pdf-export .badge,
-                .pdf-export .bg-primary,
-                .pdf-export .bg-danger,
-                .pdf-export .bg-warning {
-                  print-color-adjust: exact !important;
-                  -webkit-print-color-adjust: exact !important;
-                }
-                .pdf-export canvas {
-                  max-width: none !important;
-                  width: 100% !important;
-                  height: auto !important;
-                  margin-bottom: 20px !important;
-                }
-                .pdf-export .card {
-                  margin-bottom: 20px !important;
-                  page-break-inside: avoid !important;
-                }
-              }
-            `;
-            document.head.appendChild(style);
-
-            // Generate PDF
-            html2pdf()
-              .set(opt)
-              .from(currentSection)
-              .save()
-              .then(() => {
-                // Cleanup
-                currentSection.classList.remove("pdf-export");
-                document.head.removeChild(style);
-              });
-          });
-        }
-
-        // Fix back button navigation
-        $("#back-to-skills").click(function () {
-          $("#edge-analysis-section").hide();
-          $("#skills-section").show();
-          updateProgressIndicator(2);
-        });
-
-        // Analysis section copy and export
-        $("#copy-analysis-btn").click(function () {
-          const analysisContent = generateAnalysisContent();
-          copyToClipboard(analysisContent);
-          showSuccessMessage("Analysis copied to clipboard!");
-        });
-
-        $("#export-analysis-pdf-btn").click(function () {
-          exportSectionToPDF("analysis-section", "analysis-results.pdf");
-        });
-
-        // Problem refinement copy and export
-        $("#copy-problem-btn").click(function () {
-          const problemContent = generateProblemContent();
-          copyToClipboard(problemContent);
-          showSuccessMessage("Problem refinement copied to clipboard!");
-        });
-
-        $("#export-problem-pdf-btn").click(function () {
-          exportSectionToPDF(
-            "problem-refinement-section",
-            "problem-refinement.pdf"
-          );
-        });
-
-        function generateAnalysisContent() {
-          let content = "# BRAINSTORMING ANALYSIS RESULTS\n\n";
-
-          // Add Themes
-          content += "## IDENTIFIED THEMES\n";
-          if (
-            userData.brainstormAnalysis &&
-            userData.brainstormAnalysis.themes
-          ) {
-            userData.brainstormAnalysis.themes.forEach((theme) => {
-              content += `### ${theme.name}\n`;
-              content += `${theme.description}\n\n`;
-              content += "Related Notes:\n";
-              theme.relatedNotes.forEach((note) => {
-                content += `- ${note}\n`;
-              });
-              content += "\n";
-            });
-          }
-
-          // Add How Might We Statements
-          content += "## HOW MIGHT WE STATEMENTS\n";
-          if (
-            userData.brainstormAnalysis &&
-            userData.brainstormAnalysis.howMightWe
-          ) {
-            userData.brainstormAnalysis.howMightWe.forEach((hmw) => {
-              content += `### ${hmw.statement}\n`;
-              content += `Context: ${hmw.context}\n\n`;
-              content += "Opportunity Areas:\n";
-              hmw.opportunities.forEach((opp) => {
-                content += `- ${opp}\n`;
-              });
-              content += "\n";
-            });
-          }
-
-          // Add Additional Insights
-          content += "## ADDITIONAL INSIGHTS\n";
-          if (
-            userData.brainstormAnalysis &&
-            userData.brainstormAnalysis.insights
-          ) {
-            userData.brainstormAnalysis.insights.forEach((insight) => {
-              content += `### ${insight.title}\n`;
-              content += `${insight.description}\n\n`;
-              if (insight.sources) {
-                content += "Related Sources:\n";
-                insight.sources.forEach((source) => {
-                  content += `- [${source.title}](${source.url})\n`;
-                });
-                content += "\n";
-              }
-            });
-          }
-
-          content +=
-            "\n--- Generated by the Brainstorming & Edge Analysis Tool ---";
-          return content;
-        }
-
-        function generateProblemContent() {
-          let content = "# REFINED PROBLEM STATEMENT\n\n";
-
-          // Problem Statement
-          content += "## PROBLEM STATEMENT\n";
-          content += `${$("#problem-statement").val() || "Not specified"}\n\n`;
-
-          // Who is Affected
-          content += "## WHO IS AFFECTED\n";
-          content += `${$("#who-affected").val() || "Not specified"}\n\n`;
-
-          // Why Important
-          content += "## WHY THIS IS IMPORTANT\n";
-          content += `${$("#why-important").val() || "Not specified"}\n\n`;
-
-          // Solution Ideas
-          content += "## INITIAL SOLUTION IDEAS\n";
-          content += `${$("#solution-ideas").val() || "Not specified"}\n\n`;
-
-          content +=
-            "--- Generated by the Brainstorming & Edge Analysis Tool ---";
-          return content;
-        }
-
-        function exportSectionToPDF(sectionId, filename) {
-          const section = document.getElementById(sectionId);
-          if (!section) {
-            console.error("Section not found:", sectionId);
-            showErrorMessage("Failed to generate PDF. Section not found.");
-            return;
-          }
-
-          // Create a clone of the section to modify for PDF export
-          const clone = section.cloneNode(true);
-
-          // Add PDF-specific styling
-          const style = document.createElement("style");
-          style.textContent = `
-            @media print {
-              .form-section {
-                background: white !important;
-                padding: 20px !important;
-                margin: 0 !important;
-                box-shadow: none !important;
-              }
-              .section-header {
-                background: #4f46e5 !important;
-                color: white !important;
-                padding: 15px !important;
-                margin-bottom: 20px !important;
-                print-color-adjust: exact !important;
-                -webkit-print-color-adjust: exact !important;
-              }
-              .card {
-                border: 1px solid #dee2e6 !important;
-                margin-bottom: 15px !important;
-                page-break-inside: avoid !important;
-              }
-              .card-body {
-                padding: 15px !important;
-              }
-              .form-label {
-                font-weight: bold !important;
-                margin-bottom: 5px !important;
-                color: #1f2937 !important;
-              }
-              textarea, input {
-                border: 1px solid #dee2e6 !important;
-                padding: 8px !important;
-                margin-bottom: 10px !important;
-                background: #f8f9fa !important;
-                color: #1f2937 !important;
-              }
-              .btn-group, .d-flex.justify-content-between {
-                display: none !important;
-              }
-            }
-          `;
-          document.head.appendChild(style);
-
-          // Configure clone for PDF export
-          clone.style.display = "block";
-          clone.style.width = "210mm"; // A4 width
-          clone.style.padding = "20px";
-          clone.style.background = "white";
-
-          // Hide navigation buttons and export controls
-          const buttonsToHide = clone.querySelectorAll(
-            ".btn-group, .d-flex.justify-content-between"
-          );
-          buttonsToHide.forEach((btn) => (btn.style.display = "none"));
-
-          // Temporarily add the clone to the document
-          document.body.appendChild(clone);
-
-          // Configure PDF options
-          const opt = {
-            margin: [20, 20, 20, 20], // top, right, bottom, left margins in mm
-            filename: filename,
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: {
-              scale: 2,
-              useCORS: true,
-              logging: false,
-              onclone: function (clonedDoc) {
-                // Additional modifications to the cloned document if needed
-                const clonedSection = clonedDoc.querySelector(`#${sectionId}`);
-                if (clonedSection) {
-                  // Ensure proper form field values are captured
-                  const originalInputs =
-                    section.querySelectorAll("input, textarea");
-                  const clonedInputs =
-                    clonedSection.querySelectorAll("input, textarea");
-                  originalInputs.forEach((input, index) => {
-                    if (clonedInputs[index]) {
-                      clonedInputs[index].value = input.value;
-                    }
-                  });
-                }
-              },
-            },
-            jsPDF: {
-              unit: "mm",
-              format: "a4",
-              orientation: "portrait",
-              compress: true,
-            },
+        // Save functions
+        function savePersonalInfo() {
+          userData.personalInfo = {
+            name: $("#name").val().trim(),
+            age: $("#age").val().trim(),
+            interests: [],
           };
 
-          // Generate PDF
-          html2pdf()
-            .set(opt)
-            .from(clone)
-            .save()
-            .then(() => {
-              // Cleanup
-              document.body.removeChild(clone);
-              document.head.removeChild(style);
-              showSuccessMessage(`PDF exported as ${filename}`);
-            })
-            .catch((err) => {
-              console.error("Error generating PDF:", err);
-              document.body.removeChild(clone);
-              document.head.removeChild(style);
-              showErrorMessage("Failed to generate PDF. Please try again.");
-            });
+          // Get interests
+          $("#interests-container .tag").each(function () {
+            const interest = $(this).text().trim().replace("×", "");
+            userData.personalInfo.interests.push(interest);
+          });
+
+          saveToLocalStorage();
         }
 
-        // Remove export-related event handlers
-        $("#export-btn").off("click");
+        function saveSkillsAndProjects() {
+          // Skills already saved when rated
 
-        // Add navigation handlers for solution generation
-        $("#generate-solutions-btn").click(async function () {
-          // Show loading state
-          showLoading("Generating solution ideas...");
+          // Save skills to learn
+          userData.skillsToLearn = [];
+          $("#skills-to-learn-container .tag").each(function () {
+            const skill = $(this).text().trim().replace("×", "");
+            userData.skillsToLearn.push(skill);
+          });
 
-          try {
-            // Get the problem details
-            const problemData = {
-              studentName: $("#name").val() || "Anonymous Student",
-              problemStatement: $("#problem-statement").val(),
-              whoAffected: $("#who-affected").val(),
-              whyImportant: $("#why-important").val(),
-              initialSolutions: $("#solution-ideas").val(),
-            };
-
-            // Call the Magic Loop
-            const response = await fetch(
-              "https://magicloops.dev/api/loop/7c352b0d-5382-420c-a3e3-f0bb1ac37c2b/run",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(problemData),
-              }
-            );
-
-            if (!response.ok) {
-              throw new Error("Failed to generate solutions");
+          // Save projects
+          userData.projects = [];
+          $(".project-description").each(function () {
+            const project = $(this).val().trim();
+            if (project) {
+              userData.projects.push(project);
             }
+          });
 
-            const result = await response.json();
+          saveToLocalStorage();
+        }
 
-            // Display the solutions
-            const solutionsHtml = result.suggestedSolutions
-              .map(
-                (solution) => `
-              <div class="card mb-3 solution-card">
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <i class="fas fa-star text-warning me-2"></i>${solution.title}
-                  </h5>
-                  <p class="card-text">${solution.description}</p>
-                  <button class="btn btn-outline-primary explore-idea-btn"
-                    data-title="${solution.title}"
-                    data-description="${solution.description}">
-                    <i class="fas fa-search me-2"></i>Explore Idea
-                  </button>
-                </div>
-              </div>
-            `
-              )
-              .join("");
+        function saveToLocalStorage() {
+          localStorage.setItem("edgeAnalysisData", JSON.stringify(userData));
+        }
 
-            $("#solutions-container").html(solutionsHtml);
+        // Load saved data
+        function loadSavedData() {
+          // Personal info
+          if (userData.personalInfo) {
+            $("#name").val(userData.personalInfo.name || "");
+            $("#age").val(userData.personalInfo.age || "");
 
-            // Switch to solutions section
-            $("#problem-refinement-section").hide();
-            $("#solution-generation-section").show();
-            updateProgressIndicator(6); // Add a new step in the progress
-          } catch (error) {
-            console.error("Error generating solutions:", error);
-            showErrorMessage("Failed to generate solutions. Please try again.");
-          } finally {
-            hideLoading();
-          }
-        });
-
-        $("#back-to-refinement").click(function () {
-          $("#solution-generation-section").hide();
-          $("#problem-refinement-section").show();
-          updateProgressIndicator(5);
-        });
-
-        // Add the PRD modal initialization and handlers
-        const prdModal = new bootstrap.Modal(
-          document.getElementById("prd-modal")
-        );
-
-        $(document).on("click", ".explore-idea-btn", function () {
-          const title = $(this).data("title");
-          const description = $(this).data("description");
-
-          $("#prd-idea-title").val(title);
-          $("#prd-idea-description").val(description);
-          $("#prd-conversation").val("");
-          $("#prd-result").hide();
-
-          prdModal.show();
-        });
-
-        $("#generate-prd-btn").click(async function () {
-          const button = $(this);
-          const originalText = button.html();
-          button
-            .html('<i class="fas fa-spinner fa-spin me-2"></i>Generating...')
-            .prop("disabled", true);
-
-          try {
-            const payload = {
-              studentName: $("#name").val() || "Anonymous Student",
-              idea: $("#prd-idea-title").val(),
-              description: $("#prd-idea-description").val(),
-              context:
-                $("#problem-statement").val() +
-                "\n" +
-                $("#why-important").val(),
-              conversation: $("#prd-conversation").val(),
-            };
-
-            const response = await fetch(
-              "https://magicloops.dev/api/loop/5d5e924f-39c2-4c90-abf8-7357ee7b3820/run",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-              }
-            );
-
-            if (!response.ok) throw new Error("Failed to generate PRD");
-
-            const result = await response.json();
-
-            // Format the PRD content
-            const prdHtml = `
-              <div class="prd-section mb-4">
-                <h6 class="text-primary"><i class="fas fa-info-circle me-2"></i>Title/Overview</h6>
-                <div class="prd-editable">${result["Title/Overview"]}</div>
-              </div>
-
-              <div class="prd-section mb-4">
-                <h6 class="text-primary"><i class="fas fa-bullseye me-2"></i>Goals/Objectives</h6>
-                <div class="prd-editable">${result["Goals/Objectives"]}</div>
-              </div>
-
-              <div class="prd-section mb-4">
-                <h6 class="text-primary"><i class="fas fa-user me-2"></i>User Stories</h6>
-                <ul class="list-unstyled prd-editable">
-                  ${result["User Stories"]
-                    .map(
-                      (story) => `
-                    <li><i class="fas fa-check-circle text-success me-2"></i>${story}</li>
-                  `
-                    )
-                    .join("")}
-                </ul>
-              </div>
-
-              <div class="prd-section">
-                <h6 class="text-primary"><i class="fas fa-list-check me-2"></i>Functional Requirements</h6>
-                <div class="ms-3">
-                  <h6 class="text-success mb-2">Must Have:</h6>
-                  <ul class="list-unstyled mb-3 prd-editable">
-                    ${result["Functional Requirements"]["Must Have"]
-                      .map(
-                        (req) => `
-                      <li><i class="fas fa-check me-2"></i>${req}</li>
-                    `
-                      )
-                      .join("")}
-                  </ul>
-
-                  <h6 class="text-warning mb-2">Nice to Have:</h6>
-                  <ul class="list-unstyled prd-editable">
-                    ${result["Functional Requirements"]["Nice to Have"]
-                      .map(
-                        (req) => `
-                      <li><i class="fas fa-star me-2"></i>${req}</li>
-                    `
-                      )
-                      .join("")}
-                  </ul>
-                </div>
-              </div>
-            `;
-
-            $("#prd-content").html(prdHtml);
-            $("#prd-result").show();
-
-            // Initialize edit and copy buttons
-            initializePRDButtons();
-          } catch (error) {
-            console.error("Error generating PRD:", error);
-            showErrorMessage("Failed to generate PRD. Please try again.");
-          } finally {
-            button.html(originalText).prop("disabled", false);
-          }
-        });
-
-        // Add the PRD button initialization function
-        function initializePRDButtons() {
-          let isEditing = false;
-
-          $("#edit-prd-btn")
-            .off("click")
-            .on("click", function () {
-              const button = $(this);
-              const prdContent = $("#prd-content");
-
-              isEditing = !isEditing;
-
-              if (isEditing) {
-                // Enable editing
-                button.html('<i class="fas fa-save me-1"></i> Save');
-                button
-                  .removeClass("btn-outline-secondary")
-                  .addClass("btn-outline-success");
-                prdContent.addClass("editing");
-                prdContent
-                  .find(".prd-editable")
-                  .attr("contenteditable", "true");
-              } else {
-                // Disable editing
-                button.html('<i class="fas fa-edit me-1"></i> Edit');
-                button
-                  .removeClass("btn-outline-success")
-                  .addClass("btn-outline-secondary");
-                prdContent.removeClass("editing");
-                prdContent.find(".prd-editable").removeAttr("contenteditable");
-                showSuccessMessage("PRD changes saved!");
-              }
-            });
-
-          $("#copy-prd-btn")
-            .off("click")
-            .on("click", function () {
-              const prdContent = $("#prd-content");
-
-              // Create a formatted text version of the PRD
-              let textContent = "PRODUCT REQUIREMENTS DOCUMENT\n\n";
-
-              // Title/Overview
-              textContent += "TITLE/OVERVIEW\n\n";
-              textContent +=
-                prdContent
-                  .find(".prd-section:eq(0) .prd-editable")
-                  .text()
-                  .trim() + "\n\n";
-
-              // Goals/Objectives
-              textContent += "GOALS/OBJECTIVES\n\n";
-              textContent +=
-                prdContent
-                  .find(".prd-section:eq(1) .prd-editable")
-                  .text()
-                  .trim() + "\n\n";
-
-              // User Stories
-              textContent += "USER STORIES\n";
-              prdContent.find(".prd-section:eq(2) li").each(function () {
-                textContent += "- " + $(this).text().trim() + "\n";
+            if (userData.personalInfo.interests) {
+              userData.personalInfo.interests.forEach((interest) => {
+                addTag("interests-container", interest);
               });
-              textContent += "\n";
+            }
+          }
 
-              // Functional Requirements
-              textContent += "FUNCTIONAL REQUIREMENTS\n\n";
-              textContent += "Must Have:\n";
-              prdContent.find(".prd-section:eq(3) .mb-3 li").each(function () {
-                textContent += "- " + $(this).text().trim() + "\n";
-              });
-              //   textContent += "\nNice to Have:\n";
-              //   prdContent
-              //     .find(".prd-section:eq(3) ul:last-child li")
-              //     .each(function () {
-              //       textContent += "- " + $(this).text().trim() + "\n";
-              //     });
-
-              // Copy to clipboard
-              navigator.clipboard
-                .writeText(textContent)
-                .then(() => {
-                  showSuccessMessage("PRD copied to clipboard!");
-                })
-                .catch((err) => {
-                  console.error("Failed to copy PRD:", err);
-                  showErrorMessage("Failed to copy PRD. Please try again.");
+          // Skills
+          if (userData.skills) {
+            userData.skills.forEach((skill) => {
+              addSkill(skill.name);
+              // Set skill level
+              const skillLevel = $(`.skill-level[data-skill="${skill.name}"]`);
+              if (skillLevel.length > 0 && skill.level) {
+                skillLevel.find(".skill-level-circle").each(function () {
+                  if ($(this).data("level") <= skill.level) {
+                    $(this).addClass("filled");
+                  }
                 });
+              }
             });
+          }
+
+          // Skills to learn
+          if (userData.skillsToLearn) {
+            userData.skillsToLearn.forEach((skill) => {
+              addTag("skills-to-learn-container", skill);
+            });
+          }
+
+          // Projects
+          if (userData.projects) {
+            $("#projects-list").empty();
+            userData.projects.forEach((project) => {
+              addProject(project);
+            });
+          }
+        }
+
+        // UI Helpers
+        function showLoading(message) {
+          $("#loading-text").text(message || "Processing...");
+          $("#loading-overlay").addClass("active");
+        }
+
+        function hideLoading() {
+          $("#loading-overlay").removeClass("active");
+        }
+
+        function showSuccessMessage(message) {
+          $("#success-text").text(message);
+          $("#success-message").addClass("show");
+
+          setTimeout(() => {
+            $("#success-message").removeClass("show");
+          }, 3000);
+        }
+
+        function clearData() {
+          localStorage.removeItem("edgeAnalysisData");
         }
 
         // Initialize all tooltips
