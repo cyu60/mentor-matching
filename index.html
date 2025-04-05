@@ -421,10 +421,67 @@
       .priority-low {
         color: #10b981;
       }
+      .project-card {
+        transition: transform 0.2s ease-in-out;
+        position: relative;
+      }
+      .project-card:hover {
+        transform: translateY(-5px);
+      }
+      .project-card.saved {
+        border-color: #4f46e5;
+      }
+      .pin-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1;
+      }
+      .pin-btn.pinned {
+        color: #4f46e5;
+      }
+      .mentor-section {
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        margin-top: 1rem;
+        padding-top: 1rem;
+      }
+      .mentor-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 1rem;
+      }
+      .mentor-bio {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.5rem;
+      }
+      .mentor-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+      .mentor-name {
+        font-weight: 600;
+        color: #4f46e5;
+        margin: 0;
+      }
+
+      /* Add styles to ensure the widget doesn't interfere with the main content */
+      elevenlabs-convai {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
     </style>
   </head>
   <body>
     <div class="app-container">
+      <!-- Add the conversational agent at the top level of the app container -->
+      <elevenlabs-convai agent-id="6hPztPZzJjupiafXw7XA"></elevenlabs-convai>
+
       <header class="text-center mb-5">
         <h1 class="display-4 fw-bold text-primary mb-3">
           Mentor Matching Tool
@@ -447,6 +504,10 @@
         <div class="progress-step" id="step3">
           <div class="progress-step-number">3</div>
           <div class="progress-step-text">Edge Analysis</div>
+        </div>
+        <div class="progress-step" id="step4">
+          <div class="progress-step-number">4</div>
+          <div class="progress-step-text">Project Generation</div>
         </div>
       </div>
 
@@ -650,20 +711,85 @@
           </div>
         </div>
 
-        <div class="d-flex justify-content-between">
-          <button
-            type="button"
-            class="btn btn-secondary px-4"
-            id="back-to-skills"
-          >
-            <i class="fas fa-arrow-left me-2"></i>Back
-          </button>
+        <div class="d-flex justify-content-end mt-4">
           <button
             type="button"
             class="btn btn-primary px-4"
-            id="restart-analysis"
+            id="next-to-projects"
           >
-            Restart Analysis <i class="fas fa-redo ms-2"></i>
+            Generate Project Ideas <i class="fas fa-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- Step 4: Project Generation -->
+      <section
+        id="project-generation-section"
+        class="form-section"
+        style="display: none"
+      >
+        <div class="section-header">
+          <h2><i class="fas fa-lightbulb me-2"></i>Project Ideas Generator</h2>
+          <p>Generate project ideas based on your interests and strengths</p>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <i class="fas fa-heart me-2"></i>Your Interests
+                </h5>
+                <div id="interests-checkboxes" class="mb-3">
+                  <!-- Interests will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <i class="fas fa-star me-2"></i>Your Strengths
+                </h5>
+                <div id="strengths-checkboxes" class="mb-3">
+                  <!-- Strengths will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center mb-4">
+          <button
+            type="button"
+            class="btn btn-primary btn-lg"
+            id="generate-projects-btn"
+          >
+            <i class="fas fa-magic me-2"></i>Generate Project Ideas
+          </button>
+        </div>
+
+        <div class="row" id="project-ideas-container">
+          <!-- Project ideas will be displayed here -->
+        </div>
+
+        <div id="saved-projects-section" class="mt-4">
+          <h5 class="mb-3">
+            <i class="fas fa-thumbtack me-2"></i>Saved Projects
+          </h5>
+          <div class="row" id="saved-projects-container">
+            <!-- Saved projects will be displayed here -->
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+          <button
+            type="button"
+            class="btn btn-secondary px-4"
+            id="back-to-edge-analysis"
+          >
+            <i class="fas fa-arrow-left me-2"></i>Back
           </button>
         </div>
       </section>
@@ -728,6 +854,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script
+      src="https://elevenlabs.io/convai-widget/index.js"
+      async
+      type="text/javascript"
+    ></script>
+
     <script>
       $(document).ready(function () {
         // Initialize variables
@@ -829,7 +961,7 @@
                   <button type="button" class="btn-close remove-skill" aria-label="Remove"></button>
                 </div>
                 <div class="skill-level" data-skill="${skillName}">
-                  <span class="ms-2 text-muted small">Beginner</span>
+                    <span class="ms-2 text-muted small">Beginner</span>
                   <div class="skill-level-circle" data-level="1"></div>
                   <div class="skill-level-circle" data-level="2"></div>
                   <div class="skill-level-circle" data-level="3"></div>
@@ -1234,6 +1366,228 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
           return new bootstrap.Tooltip(tooltipTriggerEl);
         });
+
+        // Initialize project generation variables
+        let savedProjects = [];
+        if (localStorage.getItem("savedProjects")) {
+          try {
+            savedProjects = JSON.parse(localStorage.getItem("savedProjects"));
+          } catch (e) {
+            console.error("Error loading saved projects:", e);
+          }
+        }
+
+        // Navigation handlers
+        $(document).on("click", "#next-to-projects", function () {
+          $("#edge-analysis-section").hide();
+          $("#project-generation-section").show();
+          updateProgressIndicator(4);
+          populateInterestsAndStrengths();
+        });
+
+        $("#back-to-edge-analysis").click(function () {
+          $("#project-generation-section").hide();
+          $("#edge-analysis-section").show();
+          updateProgressIndicator(3);
+        });
+
+        function populateInterestsAndStrengths() {
+          // Get interests from personal info
+          const interests = userData.personalInfo.interests || [];
+          const interestsHtml = interests
+            .map(
+              (interest) => `
+            <div class="form-check">
+              <input class="form-check-input interest-checkbox" type="checkbox" value="${interest}" id="interest-${interest}">
+              <label class="form-check-label" for="interest-${interest}">
+                ${interest}
+              </label>
+            </div>
+          `
+            )
+            .join("");
+          $("#interests-checkboxes").html(interestsHtml);
+
+          // Get strengths from edge analysis
+          const strengths = userData.edgeAnalysisResult.strengths || [];
+          const strengthsHtml = strengths
+            .map(
+              (strength) => `
+            <div class="form-check">
+              <input class="form-check-input strength-checkbox" type="checkbox" value="${strength}" id="strength-${strength}">
+              <label class="form-check-label" for="strength-${strength}">
+                ${strength}
+              </label>
+                </div>
+              `
+            )
+            .join("");
+          $("#strengths-checkboxes").html(strengthsHtml);
+
+          // Display saved projects
+          displaySavedProjects();
+        }
+
+        $("#generate-projects-btn").click(async function () {
+          const selectedInterests = $(".interest-checkbox:checked")
+            .map(function () {
+              return $(this).val();
+            })
+            .get();
+
+          const selectedStrengths = $(".strength-checkbox:checked")
+            .map(function () {
+              return $(this).val();
+            })
+            .get();
+
+          if (
+            selectedInterests.length === 0 ||
+            selectedStrengths.length === 0
+          ) {
+            alert("Please select at least one interest and one strength.");
+            return;
+          }
+
+          try {
+            showLoading("Generating project ideas...");
+
+            const response = await fetch(
+              "https://magicloops.dev/api/loop/d490e73f-6867-4379-b93b-4b2adac269e2/run",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  interests: selectedInterests.join(", "),
+                  strengths: selectedStrengths.join(", "),
+                }),
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error("Failed to generate project ideas");
+            }
+
+            const result = await response.json();
+            displayProjectIdeas(result.ideas);
+          } catch (error) {
+            console.error("Error generating project ideas:", error);
+            alert("Failed to generate project ideas. Please try again.");
+          } finally {
+            hideLoading();
+          }
+        });
+
+        function displayProjectIdeas(ideas) {
+          const projectsHtml = ideas
+            .map(
+              (idea) => `
+            <div class="col-md-4 mb-4">
+              <div class="card h-100 project-card" data-project='${JSON.stringify(
+                idea
+              )}'>
+                <button class="btn btn-link pin-btn" onclick="toggleProjectPin(this)">
+                  <i class="fas fa-thumbtack"></i>
+                </button>
+                <div class="card-body">
+                  <h5 class="card-title">${idea.title}</h5>
+                  <p class="card-text">${idea.description}</p>
+                  
+                  <div class="mentor-section">
+                    <div class="mentor-header">
+                      <img src="${idea.mentor.image_url}" 
+                           alt="${idea.mentor.name}" 
+                           class="mentor-image"
+                           onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(
+                             idea.mentor.name
+                           )}&background=4f46e5&color=fff'">
+                      <div>
+                        <h6 class="mentor-name">${idea.mentor.name}</h6>
+                        <small class="text-muted">Project Mentor</small>
+                      </div>
+                    </div>
+                    <p class="mentor-bio">${idea.mentor.bio}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `
+            )
+            .join("");
+
+          $("#project-ideas-container").html(projectsHtml);
+        }
+
+        function toggleProjectPin(btn) {
+          const card = $(btn).closest(".project-card");
+          const project = JSON.parse(card.attr("data-project"));
+
+          if ($(btn).hasClass("pinned")) {
+            // Unpin project
+            $(btn).removeClass("pinned");
+            card.removeClass("saved");
+            savedProjects = savedProjects.filter(
+              (p) => p.title !== project.title
+            );
+          } else {
+            // Pin project
+            $(btn).addClass("pinned");
+            card.addClass("saved");
+            if (!savedProjects.some((p) => p.title === project.title)) {
+              savedProjects.push(project);
+            }
+          }
+
+          // Save to localStorage
+          localStorage.setItem("savedProjects", JSON.stringify(savedProjects));
+          displaySavedProjects();
+        }
+
+        function displaySavedProjects() {
+          if (savedProjects.length === 0) {
+            $("#saved-projects-section").hide();
+            return;
+          }
+
+          const savedProjectsHtml = savedProjects
+            .map(
+              (project) => `
+            <div class="col-md-4 mb-4">
+              <div class="card h-100 project-card saved">
+                <button class="btn btn-link pin-btn pinned" onclick="toggleProjectPin(this)">
+                  <i class="fas fa-thumbtack"></i>
+                </button>
+                <div class="card-body">
+                  <h5 class="card-title">${project.title}</h5>
+                  <p class="card-text">${project.description}</p>
+                  
+                  <div class="mentor-section">
+                    <div class="mentor-header">
+                      <img src="${project.mentor.image_url}" 
+                           alt="${project.mentor.name}" 
+                           class="mentor-image"
+                           onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(
+                             project.mentor.name
+                           )}&background=4f46e5&color=fff'">
+                      <div>
+                        <h6 class="mentor-name">${project.mentor.name}</h6>
+                        <small class="text-muted">Project Mentor</small>
+                      </div>
+                    </div>
+                    <p class="mentor-bio">${project.mentor.bio}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `
+            )
+            .join("");
+
+          $("#saved-projects-container").html(savedProjectsHtml);
+          $("#saved-projects-section").show();
+        }
       });
     </script>
   </body>
