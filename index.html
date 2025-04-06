@@ -475,6 +475,68 @@
         right: 20px;
         z-index: 1000;
       }
+
+      .language-options {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      .form-check {
+        margin-bottom: 0.5rem;
+      }
+      .card {
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      .card-title {
+        color: #4f46e5;
+        font-weight: 600;
+      }
+      .form-label {
+        font-weight: 500;
+      }
+      .text-danger {
+        font-weight: bold;
+      }
+      .form-check-label strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+      .form-check {
+        margin-bottom: 0.75rem;
+      }
+      .card-title i {
+        color: #4f46e5;
+      }
+      .academic-interests,
+      .extracurricular-interests {
+        padding: 0.5rem;
+      }
+      .form-check-input:checked {
+        background-color: #4f46e5;
+        border-color: #4f46e5;
+      }
+      .form-check-input:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+      }
+      textarea:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+      }
+      .text-muted.small {
+        font-size: 0.875rem;
+      }
+      .card {
+        border-radius: 0.5rem;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      .card-body {
+        padding: 1.5rem;
+      }
+      .invalid-feedback {
+        font-size: 0.875rem;
+      }
     </style>
   </head>
   <body>
@@ -515,46 +577,298 @@
       <section id="personal-info-section" class="form-section">
         <div class="section-header">
           <h2><i class="fas fa-user me-2"></i>Personal Information</h2>
-          <p>
-            Tell us a bit about yourself to help personalize your experience.
-          </p>
+          <p>Tell us about yourself to help personalize your experience.</p>
         </div>
 
-        <form id="personal-info-form">
-          <div class="row g-3 mb-4">
-            <div class="col-md-6">
-              <label for="name" class="form-label">Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                placeholder="Your name"
-              />
-            </div>
-            <div class="col-md-3">
-              <label for="age" class="form-label">Age</label>
-              <input
-                type="number"
-                class="form-control"
-                id="age"
-                min="13"
-                max="100"
-              />
+        <form id="personal-info-form" class="needs-validation" novalidate>
+          <!-- Basic Information -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3">Basic Information</h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="name" class="form-label"
+                    >Full Name <span class="text-danger">*</span></label
+                  >
+                  <input type="text" class="form-control" id="name" required />
+                  <div class="invalid-feedback">
+                    Please enter your full name.
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label for="age" class="form-label"
+                    >Age <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="age"
+                    min="5"
+                    max="18"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Please enter a valid age (5-18).
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label for="gradeLevel" class="form-label"
+                    >Grade Level <span class="text-danger">*</span></label
+                  >
+                  <select class="form-select" id="gradeLevel" required>
+                    <option value="">Select Grade Level</option>
+                    <optgroup label="Elementary (K-5)">
+                      <option value="K">Kindergarten</option>
+                      <option value="1">1st Grade</option>
+                      <option value="2">2nd Grade</option>
+                      <option value="3">3rd Grade</option>
+                      <option value="4">4th Grade</option>
+                      <option value="5">5th Grade</option>
+                    </optgroup>
+                    <optgroup label="Middle School (6-8)">
+                      <option value="6">6th Grade</option>
+                      <option value="7">7th Grade</option>
+                      <option value="8">8th Grade</option>
+                    </optgroup>
+                    <optgroup label="High School (9-12)">
+                      <option value="9">9th Grade</option>
+                      <option value="10">10th Grade</option>
+                      <option value="11">11th Grade</option>
+                      <option value="12">12th Grade</option>
+                    </optgroup>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select your grade level.
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="mb-4">
-            <label class="form-label">Interests & Hobbies</label>
-            <p class="text-muted small">
-              Type and press Enter to add multiple interests
-            </p>
-            <div class="tag-input-container" id="interests-container">
-              <input
-                type="text"
-                class="form-control tag-input"
-                id="interests-input"
-                placeholder="Technology, reading, hiking, etc."
-              />
+          <!-- School Information -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3">School Information</h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="schoolDistrict" class="form-label"
+                    >School District <span class="text-danger">*</span></label
+                  >
+                  <select class="form-select" id="schoolDistrict" required>
+                    <option value="">Select School District</option>
+                    <option value="alameda">
+                      Alameda Unified School District
+                    </option>
+                    <option value="berkeley">
+                      Berkeley Unified School District
+                    </option>
+                    <option value="dublin">
+                      Dublin Unified School District
+                    </option>
+                    <option value="fremont">
+                      Fremont Unified School District
+                    </option>
+                    <option value="hayward">
+                      Hayward Unified School District
+                    </option>
+                    <option value="livermore">
+                      Livermore Valley Joint Unified School District
+                    </option>
+                    <option value="newark">
+                      Newark Unified School District
+                    </option>
+                    <option value="oakland">
+                      Oakland Unified School District
+                    </option>
+                    <option value="piedmont">
+                      Piedmont Unified School District
+                    </option>
+                    <option value="pleasanton">
+                      Pleasanton Unified School District
+                    </option>
+                    <option value="sanleandro">
+                      San Leandro Unified School District
+                    </option>
+                    <option value="sanlorenzo">
+                      San Lorenzo Unified School District
+                    </option>
+                    <option value="sanfrancisco">
+                      San Francisco Unified School District
+                    </option>
+                    <option value="sanjose">
+                      San Jose Unified School District
+                    </option>
+                    <option value="other">Other</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select your school district.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="schoolName" class="form-label"
+                    >School Name (Optional)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="schoolName"
+                    placeholder="Enter your school name"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="cityNeighborhood" class="form-label"
+                    >City or Neighborhood
+                    <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cityNeighborhood"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Please enter your city or neighborhood.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Language and Contact -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3">Language and Contact Information</h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label"
+                    >Preferred Language
+                    <span class="text-danger">*</span></label
+                  >
+                  <div class="language-options">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preferredLanguage"
+                        id="langEnglish"
+                        value="english"
+                        required
+                      />
+                      <label class="form-check-label" for="langEnglish"
+                        >English</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preferredLanguage"
+                        id="langSpanish"
+                        value="spanish"
+                      />
+                      <label class="form-check-label" for="langSpanish"
+                        >Spanish</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preferredLanguage"
+                        id="langChinese"
+                        value="chinese"
+                      />
+                      <label class="form-check-label" for="langChinese"
+                        >Chinese (Mandarin/Cantonese)</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preferredLanguage"
+                        id="langVietnamese"
+                        value="vietnamese"
+                      />
+                      <label class="form-check-label" for="langVietnamese"
+                        >Vietnamese</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preferredLanguage"
+                        id="langTagalog"
+                        value="tagalog"
+                      />
+                      <label class="form-check-label" for="langTagalog"
+                        >Tagalog</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preferredLanguage"
+                        id="langOther"
+                        value="other"
+                      />
+                      <label class="form-check-label" for="langOther"
+                        >Other</label
+                      >
+                    </div>
+                  </div>
+                  <div
+                    id="otherLanguageInput"
+                    class="mt-2"
+                    style="display: none"
+                  >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="otherLanguageSpecify"
+                      placeholder="Please specify your preferred language"
+                    />
+                  </div>
+                  <div class="invalid-feedback">
+                    Please select your preferred language.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="guardianContact" class="form-label"
+                    >Guardian/Parent Contact Information (Optional)</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="guardianContact"
+                    rows="3"
+                    placeholder="Enter phone number and/or email address"
+                  ></textarea>
+                  <small class="text-muted"
+                    >This information will be kept private and used only for
+                    program-related communications.</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interests Section -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3">Interests & Hobbies</h5>
+              <p class="text-muted small">
+                Type and press Enter to add multiple interests
+              </p>
+              <div class="tag-input-container" id="interests-container">
+                <input
+                  type="text"
+                  class="form-control tag-input"
+                  id="interests-input"
+                  placeholder="Technology, reading, hiking, etc."
+                />
+              </div>
             </div>
           </div>
 
@@ -573,90 +887,410 @@
       <!-- Step 2: Skills & Projects -->
       <section id="skills-section" class="form-section" style="display: none">
         <div class="section-header">
-          <h2><i class="fas fa-code me-2"></i>Skills & Projects</h2>
-          <p>Tell us about your technical skills and past projects.</p>
-        </div>
-
-        <div class="mb-4">
-          <h5>Current Skills</h5>
-          <div class="input-group mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="skill-input"
-              placeholder="Enter a skill (e.g., Python, JavaScript, React)"
-            />
-            <button
-              class="btn btn-outline-primary"
-              type="button"
-              id="add-skill-btn"
-            >
-              Add Skill
-            </button>
-          </div>
-          <div id="skills-list"></div>
-        </div>
-
-        <div class="mb-4">
-          <h5>Skills I Want to Learn</h5>
-          <p class="text-muted small">
-            Type and press Enter to add multiple skills
+          <h2><i class="fas fa-code me-2"></i>Interest and Mentor Matching</h2>
+          <p>
+            Help us understand your interests and preferences for mentorship.
           </p>
-          <div class="tag-input-container" id="skills-to-learn-container">
-            <input
-              type="text"
-              class="form-control tag-input"
-              id="skills-to-learn-input"
-              placeholder="Skills you want to learn"
-            />
-          </div>
         </div>
 
-        <div class="mb-4">
-          <h5>Projects & Achievements</h5>
-          <p class="text-muted small">
-            Add projects you've worked on or achievements you're proud of
-          </p>
-          <div id="projects-list">
-            <div class="mb-3">
-              <textarea
-                class="form-control mb-2 project-description"
-                rows="2"
-                placeholder="Describe a project or achievement"
-              ></textarea>
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-danger remove-project"
-              >
-                Remove
-              </button>
+        <form id="interests-form" class="needs-validation" novalidate>
+          <!-- Academic Interests -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3">
+                <i class="fas fa-book me-2"></i>Preferred Academic Subjects
+              </h5>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="academic-interests">
+                    <div class="form-check mb-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="math"
+                        name="academic_interests"
+                        value="mathematics"
+                      />
+                      <label class="form-check-label" for="math"
+                        >Mathematics</label
+                      >
+                    </div>
+                    <div class="form-check mb-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="science"
+                        name="academic_interests"
+                        value="science"
+                      />
+                      <label class="form-check-label" for="science"
+                        >Science & Technology</label
+                      >
+                    </div>
+                    <div class="form-check mb-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="arts"
+                        name="academic_interests"
+                        value="arts"
+                      />
+                      <label class="form-check-label" for="arts"
+                        >Arts & Humanities</label
+                      >
+                    </div>
+                    <div class="form-check mb-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="social"
+                        name="academic_interests"
+                        value="social"
+                      />
+                      <label class="form-check-label" for="social"
+                        >Social Sciences</label
+                      >
+                    </div>
+                    <div class="form-check mb-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="cs"
+                        name="academic_interests"
+                        value="cs"
+                      />
+                      <label class="form-check-label" for="cs"
+                        >Computer Science & Programming</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="academic-interests">
+                    <div class="form-check mb-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="engineering"
+                        name="academic_interests"
+                        value="engineering"
+                      />
+                      <label class="form-check-label" for="engineering"
+                        >Engineering & Robotics</label
+                      >
+                    </div>
+                    <div class="form-check mb-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="business"
+                        name="academic_interests"
+                        value="business"
+                      />
+                      <label class="form-check-label" for="business"
+                        >Business & Entrepreneurship</label
+                      >
+                    </div>
+                    <div class="form-check mb-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="health"
+                        name="academic_interests"
+                        value="health"
+                      />
+                      <label class="form-check-label" for="health"
+                        >Health & Medicine</label
+                      >
+                    </div>
+                    <div class="form-check mb-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="other_academic"
+                        name="academic_interests"
+                        value="other"
+                      />
+                      <label class="form-check-label" for="other_academic"
+                        >Other</label
+                      >
+                    </div>
+                    <div
+                      id="other_academic_input"
+                      class="mb-2 ms-4"
+                      style="display: none"
+                    >
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        placeholder="Please specify"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            id="add-project-btn"
-          >
-            <i class="fas fa-plus me-2"></i>Add Another Project
-          </button>
-        </div>
 
-        <div class="d-flex justify-content-between">
-          <button
-            type="button"
-            class="btn btn-secondary px-4"
-            id="back-to-personal"
-          >
-            <i class="fas fa-arrow-left me-2"></i>Back
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary px-4"
-            id="analyze-edge-btn"
-          >
-            Next: Edge Analysis <i class="fas fa-arrow-right ms-2"></i>
-          </button>
-        </div>
+          <!-- Extracurricular Interests -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3">
+                <i class="fas fa-hobby me-2"></i>Extracurricular Interests
+              </h5>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-check mb-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="music"
+                      name="extracurricular"
+                      value="music"
+                    />
+                    <label class="form-check-label" for="music">Music</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="sports"
+                      name="extracurricular"
+                      value="sports"
+                    />
+                    <label class="form-check-label" for="sports">Sports</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="arts_crafts"
+                      name="extracurricular"
+                      value="arts_crafts"
+                    />
+                    <label class="form-check-label" for="arts_crafts"
+                      >Arts & Crafts</label
+                    >
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-check mb-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="gaming"
+                      name="extracurricular"
+                      value="gaming"
+                    />
+                    <label class="form-check-label" for="gaming"
+                      >Gaming & eSports</label
+                    >
+                  </div>
+                  <div class="form-check mb-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="volunteering"
+                      name="extracurricular"
+                      value="volunteering"
+                    />
+                    <label class="form-check-label" for="volunteering"
+                      >Volunteering & Community Service</label
+                    >
+                  </div>
+                  <div class="form-check mb-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="debate"
+                      name="extracurricular"
+                      value="debate"
+                    />
+                    <label class="form-check-label" for="debate"
+                      >Debate/Public Speaking</label
+                    >
+                  </div>
+                  <div class="form-check mb-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="other_extra"
+                      name="extracurricular"
+                      value="other"
+                    />
+                    <label class="form-check-label" for="other_extra"
+                      >Other</label
+                    >
+                  </div>
+                  <div
+                    id="other_extra_input"
+                    class="mb-2 ms-4"
+                    style="display: none"
+                  >
+                    <input
+                      type="text"
+                      class="form-control form-control-sm"
+                      placeholder="Please specify"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mentor Preferences -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3">
+                <i class="fas fa-user-graduate me-2"></i>Mentor Preferences
+              </h5>
+              <div class="mb-4">
+                <label class="form-label">Preferred Type of Mentor</label>
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="mentor_type"
+                    id="academic_mentor"
+                    value="academic"
+                    required
+                  />
+                  <label class="form-check-label" for="academic_mentor">
+                    <strong>Academic Mentor</strong>
+                    <div class="text-muted small">
+                      Subject tutoring, academic counseling
+                    </div>
+                  </label>
+                </div>
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="mentor_type"
+                    id="career_mentor"
+                    value="career"
+                  />
+                  <label class="form-check-label" for="career_mentor">
+                    <strong>Career Mentor</strong>
+                    <div class="text-muted small">
+                      Career advice, internships, job shadowing
+                    </div>
+                  </label>
+                </div>
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="mentor_type"
+                    id="personal_mentor"
+                    value="personal"
+                  />
+                  <label class="form-check-label" for="personal_mentor">
+                    <strong>Personal Development Mentor</strong>
+                    <div class="text-muted small">
+                      Life skills, social-emotional learning
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label"
+                  >Availability for Mentoring Sessions</label
+                >
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="weekdays"
+                    name="availability"
+                    value="weekdays"
+                  />
+                  <label class="form-check-label" for="weekdays"
+                    >Weekdays (After School)</label
+                  >
+                </div>
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="weekends"
+                    name="availability"
+                    value="weekends"
+                  />
+                  <label class="form-check-label" for="weekends"
+                    >Weekends</label
+                  >
+                </div>
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="flexible"
+                    name="availability"
+                    value="flexible"
+                  />
+                  <label class="form-check-label" for="flexible"
+                    >Flexible/Unsure</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Goals and Additional Information -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3">
+                <i class="fas fa-bullseye me-2"></i>Goals and Additional
+                Information
+              </h5>
+              <div class="mb-4">
+                <label for="goals" class="form-label"
+                  >What do you hope to achieve through this mentoring
+                  program?</label
+                >
+                <textarea
+                  class="form-control"
+                  id="goals"
+                  rows="4"
+                  required
+                ></textarea>
+                <div class="invalid-feedback">
+                  Please share your goals for the mentorship.
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="additional_info" class="form-label"
+                  >Additional Information / Special Needs (Optional)</label
+                >
+                <textarea
+                  class="form-control"
+                  id="additional_info"
+                  rows="3"
+                  placeholder="Any specific preferences, accessibility requirements, or circumstances to consider?"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button
+              type="button"
+              class="btn btn-secondary px-4"
+              id="back-to-personal"
+            >
+              <i class="fas fa-arrow-left me-2"></i>Back
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary px-4"
+              id="analyze-edge-btn"
+            >
+              Next: Edge Analysis <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </form>
       </section>
 
       <!-- Step 3: Edge Analysis -->
@@ -739,9 +1373,33 @@
               <div class="card-body">
                 <h5 class="card-title">
                   <i class="fas fa-heart me-2"></i>Your Interests
+                  <button
+                    class="btn btn-sm btn-outline-primary float-end"
+                    id="add-interest-btn"
+                  >
+                    <i class="fas fa-plus"></i> Add Interest
+                  </button>
                 </h5>
                 <div id="interests-checkboxes" class="mb-3">
                   <!-- Interests will be populated here -->
+                </div>
+                <div
+                  id="new-interest-form"
+                  class="input-group mb-3"
+                  style="display: none"
+                >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="new-interest-input"
+                    placeholder="Enter new interest"
+                  />
+                  <button class="btn btn-primary" id="save-interest-btn">
+                    Add
+                  </button>
+                  <button class="btn btn-secondary" id="cancel-interest-btn">
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
@@ -751,9 +1409,33 @@
               <div class="card-body">
                 <h5 class="card-title">
                   <i class="fas fa-star me-2"></i>Your Strengths
+                  <button
+                    class="btn btn-sm btn-outline-primary float-end"
+                    id="add-strength-btn"
+                  >
+                    <i class="fas fa-plus"></i> Add Strength
+                  </button>
                 </h5>
                 <div id="strengths-checkboxes" class="mb-3">
                   <!-- Strengths will be populated here -->
+                </div>
+                <div
+                  id="new-strength-form"
+                  class="input-group mb-3"
+                  style="display: none"
+                >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="new-strength-input"
+                    placeholder="Enter new strength"
+                  />
+                  <button class="btn btn-primary" id="save-strength-btn">
+                    Add
+                  </button>
+                  <button class="btn btn-secondary" id="cancel-strength-btn">
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
@@ -888,6 +1570,27 @@
 
         // Navigation between sections
         $("#next-to-skills").click(function () {
+          // Basic validation
+          if ($("#name").val().trim() === "") {
+            alert("Please enter your name");
+            $("#name").focus();
+            return;
+          }
+
+          if ($("#age").val().trim() === "") {
+            alert("Please enter your age");
+            $("#age").focus();
+            return;
+          }
+
+          const age = parseInt($("#age").val());
+          if (isNaN(age) || age < 5 || age > 18) {
+            alert("Please enter a valid age between 5 and 18");
+            $("#age").focus();
+            return;
+          }
+
+          // If validation passes, save and proceed
           savePersonalInfo();
           $("#personal-info-section").hide();
           $("#skills-section").show();
@@ -915,7 +1618,7 @@
           $(`#step${step}`).addClass("active");
         }
 
-        // Handle tags input (for interests and skills to learn)
+        // Handle tags input (for interests)
         $(".tag-input").keydown(function (e) {
           if (e.key === "Enter" && $(this).val().trim() !== "") {
             e.preventDefault();
@@ -1252,6 +1955,15 @@
           userData.personalInfo = {
             name: $("#name").val().trim(),
             age: $("#age").val().trim(),
+            gradeLevel: $("#gradeLevel").val(),
+            schoolDistrict: $("#schoolDistrict").val(),
+            schoolName: $("#schoolName").val().trim(),
+            cityNeighborhood: $("#cityNeighborhood").val().trim(),
+            preferredLanguage: $(
+              'input[name="preferredLanguage"]:checked'
+            ).val(),
+            otherLanguage: $("#otherLanguageSpecify").val().trim(),
+            guardianContact: $("#guardianContact").val().trim(),
             interests: [],
           };
 
@@ -1292,11 +2004,36 @@
 
         // Load saved data
         function loadSavedData() {
-          // Personal info
           if (userData.personalInfo) {
             $("#name").val(userData.personalInfo.name || "");
             $("#age").val(userData.personalInfo.age || "");
+            $("#gradeLevel").val(userData.personalInfo.gradeLevel || "");
+            $("#schoolDistrict").val(
+              userData.personalInfo.schoolDistrict || ""
+            );
+            $("#schoolName").val(userData.personalInfo.schoolName || "");
+            $("#cityNeighborhood").val(
+              userData.personalInfo.cityNeighborhood || ""
+            );
 
+            // Set preferred language
+            if (userData.personalInfo.preferredLanguage) {
+              $(
+                `input[name="preferredLanguage"][value="${userData.personalInfo.preferredLanguage}"]`
+              ).prop("checked", true);
+              if (userData.personalInfo.preferredLanguage === "other") {
+                $("#otherLanguageInput").show();
+                $("#otherLanguageSpecify").val(
+                  userData.personalInfo.otherLanguage || ""
+                );
+              }
+            }
+
+            $("#guardianContact").val(
+              userData.personalInfo.guardianContact || ""
+            );
+
+            // Load interests
             if (userData.personalInfo.interests) {
               userData.personalInfo.interests.forEach((interest) => {
                 addTag("interests-container", interest);
@@ -1397,11 +2134,16 @@
           const interestsHtml = interests
             .map(
               (interest) => `
-            <div class="form-check">
-              <input class="form-check-input interest-checkbox" type="checkbox" value="${interest}" id="interest-${interest}">
-              <label class="form-check-label" for="interest-${interest}">
-                ${interest}
-              </label>
+            <div class="form-check d-flex justify-content-between align-items-center">
+              <div>
+                <input class="form-check-input interest-checkbox" type="checkbox" value="${interest}" id="interest-${interest}">
+                <label class="form-check-label" for="interest-${interest}">
+                  ${interest}
+                </label>
+              </div>
+              <button class="btn btn-sm btn-outline-danger remove-interest" data-interest="${interest}">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
           `
             )
@@ -1413,12 +2155,17 @@
           const strengthsHtml = strengths
             .map(
               (strength) => `
-            <div class="form-check">
-              <input class="form-check-input strength-checkbox" type="checkbox" value="${strength}" id="strength-${strength}">
-              <label class="form-check-label" for="strength-${strength}">
-                ${strength}
-              </label>
-                </div>
+            <div class="form-check d-flex justify-content-between align-items-center">
+              <div>
+                <input class="form-check-input strength-checkbox" type="checkbox" value="${strength}" id="strength-${strength}">
+                <label class="form-check-label" for="strength-${strength}">
+                  ${strength}
+                </label>
+              </div>
+              <button class="btn btn-sm btn-outline-danger remove-strength" data-strength="${strength}">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
               `
             )
             .join("");
@@ -1427,6 +2174,74 @@
           // Display saved projects
           displaySavedProjects();
         }
+
+        // Add event handlers for interests
+        $("#add-interest-btn").click(function () {
+          $("#new-interest-form").show();
+          $("#new-interest-input").focus();
+        });
+
+        $("#cancel-interest-btn").click(function () {
+          $("#new-interest-form").hide();
+          $("#new-interest-input").val("");
+        });
+
+        $("#save-interest-btn").click(function () {
+          const newInterest = $("#new-interest-input").val().trim();
+          if (newInterest) {
+            userData.personalInfo.interests =
+              userData.personalInfo.interests || [];
+            if (!userData.personalInfo.interests.includes(newInterest)) {
+              userData.personalInfo.interests.push(newInterest);
+              saveToLocalStorage();
+              populateInterestsAndStrengths();
+            }
+            $("#new-interest-form").hide();
+            $("#new-interest-input").val("");
+          }
+        });
+
+        $(document).on("click", ".remove-interest", function () {
+          const interest = $(this).data("interest");
+          userData.personalInfo.interests =
+            userData.personalInfo.interests.filter((i) => i !== interest);
+          saveToLocalStorage();
+          populateInterestsAndStrengths();
+        });
+
+        // Add event handlers for strengths
+        $("#add-strength-btn").click(function () {
+          $("#new-strength-form").show();
+          $("#new-strength-input").focus();
+        });
+
+        $("#cancel-strength-btn").click(function () {
+          $("#new-strength-form").hide();
+          $("#new-strength-input").val("");
+        });
+
+        $("#save-strength-btn").click(function () {
+          const newStrength = $("#new-strength-input").val().trim();
+          if (newStrength) {
+            userData.edgeAnalysisResult.strengths =
+              userData.edgeAnalysisResult.strengths || [];
+            if (!userData.edgeAnalysisResult.strengths.includes(newStrength)) {
+              userData.edgeAnalysisResult.strengths.push(newStrength);
+              saveToLocalStorage();
+              populateInterestsAndStrengths();
+            }
+            $("#new-strength-form").hide();
+            $("#new-strength-input").val("");
+          }
+        });
+
+        $(document).on("click", ".remove-strength", function () {
+          const strength = $(this).data("strength");
+          userData.edgeAnalysisResult.strengths =
+            userData.edgeAnalysisResult.strengths.filter((s) => s !== strength);
+          saveToLocalStorage();
+          populateInterestsAndStrengths();
+        });
 
         $("#generate-projects-btn").click(async function () {
           const selectedInterests = $(".interest-checkbox:checked")
@@ -1588,6 +2403,121 @@
           $("#saved-projects-container").html(savedProjectsHtml);
           $("#saved-projects-section").show();
         }
+
+        // Handle "Other" toggles
+        $("#other_academic").change(function () {
+          $("#other_academic_input").toggle(this.checked);
+        });
+
+        $("#other_extra").change(function () {
+          $("#other_extra_input").toggle(this.checked);
+        });
+
+        // Form validation and submission
+        $("#interests-form").on("submit", function (e) {
+          e.preventDefault();
+
+          if (this.checkValidity()) {
+            // Save the data
+            saveInterestsData();
+            // Proceed to next section
+            $("#skills-section").hide();
+            $("#edge-analysis-section").show();
+            updateProgressIndicator(3);
+          }
+
+          $(this).addClass("was-validated");
+        });
+
+        function saveInterestsData() {
+          userData.interests = {
+            academic: $('input[name="academic_interests"]:checked')
+              .map(function () {
+                const val = $(this).val();
+                return val === "other"
+                  ? $("#other_academic_input input").val()
+                  : val;
+              })
+              .get(),
+            extracurricular: $('input[name="extracurricular"]:checked')
+              .map(function () {
+                const val = $(this).val();
+                return val === "other"
+                  ? $("#other_extra_input input").val()
+                  : val;
+              })
+              .get(),
+            mentor_type: $('input[name="mentor_type"]:checked').val(),
+            availability: $('input[name="availability"]:checked')
+              .map(function () {
+                return $(this).val();
+              })
+              .get(),
+            goals: $("#goals").val().trim(),
+            additional_info: $("#additional_info").val().trim(),
+          };
+
+          saveToLocalStorage();
+        }
+
+        // Load saved data if exists
+        function loadInterestsData() {
+          if (userData.interests) {
+            // Load academic interests
+            userData.interests.academic.forEach((interest) => {
+              if (interest === "other") {
+                $("#other_academic").prop("checked", true);
+                $("#other_academic_input").show();
+                $("#other_academic_input input").val(
+                  userData.interests.other_academic
+                );
+              } else {
+                $(`input[name="academic_interests"][value="${interest}"]`).prop(
+                  "checked",
+                  true
+                );
+              }
+            });
+
+            // Load extracurricular interests
+            userData.interests.extracurricular.forEach((interest) => {
+              if (interest === "other") {
+                $("#other_extra").prop("checked", true);
+                $("#other_extra_input").show();
+                $("#other_extra_input input").val(
+                  userData.interests.other_extra
+                );
+              } else {
+                $(`input[name="extracurricular"][value="${interest}"]`).prop(
+                  "checked",
+                  true
+                );
+              }
+            });
+
+            // Load mentor type
+            if (userData.interests.mentor_type) {
+              $(
+                `input[name="mentor_type"][value="${userData.interests.mentor_type}"]`
+              ).prop("checked", true);
+            }
+
+            // Load availability
+            userData.interests.availability.forEach((availability) => {
+              $(`input[name="availability"][value="${availability}"]`).prop(
+                "checked",
+                true
+              );
+            });
+
+            // Load goals and additional info
+            $("#goals").val(userData.interests.goals || "");
+            $("#additional_info").val(userData.interests.additional_info || "");
+          }
+        }
+
+        // Load saved data on page load
+        loadInterestsData();
       });
     </script>
   </body>
