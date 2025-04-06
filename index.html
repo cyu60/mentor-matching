@@ -903,7 +903,7 @@
                     Please enter your full name.
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label for="age" class="form-label"
                     >Age <span class="text-danger">*</span></label
                   >
@@ -919,35 +919,19 @@
                     Please enter a valid age (5-18).
                   </div>
                 </div>
-                <div class="col-md-3">
-                  <label for="gradeLevel" class="form-label"
-                    >Grade Level <span class="text-danger">*</span></label
+                <div class="col-md-4">
+                  <label for="gender" class="form-label"
+                    >Gender <span class="text-danger">*</span></label
                   >
-                  <select class="form-select" id="gradeLevel" required>
-                    <option value="">Select Grade Level</option>
-                    <optgroup label="Elementary (K-5)">
-                      <option value="K">Kindergarten</option>
-                      <option value="1">1st Grade</option>
-                      <option value="2">2nd Grade</option>
-                      <option value="3">3rd Grade</option>
-                      <option value="4">4th Grade</option>
-                      <option value="5">5th Grade</option>
-                    </optgroup>
-                    <optgroup label="Middle School (6-8)">
-                      <option value="6">6th Grade</option>
-                      <option value="7">7th Grade</option>
-                      <option value="8">8th Grade</option>
-                    </optgroup>
-                    <optgroup label="High School (9-12)">
-                      <option value="9">9th Grade</option>
-                      <option value="10">10th Grade</option>
-                      <option value="11">11th Grade</option>
-                      <option value="12">12th Grade</option>
-                    </optgroup>
+                  <select class="form-select" id="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="non-binary">Non-binary</option>
+                    <option value="other">Other</option>
+                    <option value="prefer-not">Prefer not to say</option>
                   </select>
-                  <div class="invalid-feedback">
-                    Please select your grade level.
-                  </div>
+                  <div class="invalid-feedback">Please select your gender.</div>
                 </div>
               </div>
             </div>
@@ -964,47 +948,93 @@
                   >
                   <select class="form-select" id="schoolDistrict" required>
                     <option value="">Select School District</option>
-                    <option value="alameda">
-                      Alameda Unified School District
+                    <option value="albany">
+                      Albany Unified School District
                     </option>
-                    <option value="berkeley">
-                      Berkeley Unified School District
+                    <option value="benicia">
+                      Benicia Unified School District
                     </option>
-                    <option value="dublin">
-                      Dublin Unified School District
+                    <option value="cabrillo">
+                      Cabrillo Unified School District
+                    </option>
+                    <option value="dixon">Dixon Unified School District</option>
+                    <option value="fairfield">
+                      Fairfield-Suisun Unified School District
                     </option>
                     <option value="fremont">
                       Fremont Unified School District
                     </option>
+                    <option value="geyserville">
+                      Geyserville Unified School District
+                    </option>
+                    <option value="gilroy">
+                      Gilroy Unified School District
+                    </option>
                     <option value="hayward">
                       Hayward Unified School District
                     </option>
-                    <option value="livermore">
-                      Livermore Valley Joint Unified School District
+                    <option value="healdsburg">
+                      Healdsburg Unified School District
                     </option>
-                    <option value="newark">
-                      Newark Unified School District
+                    <option value="lahonda">
+                      La Honda-Pescadero Unified School District
+                    </option>
+                    <option value="martinez">
+                      Martinez Unified School District
+                    </option>
+                    <option value="milpitas">
+                      Milpitas Unified School District
+                    </option>
+                    <option value="morganhill">
+                      Morgan Hill Unified School District
+                    </option>
+                    <option value="mtdiablo">
+                      Mount Diablo Unified School District
+                    </option>
+                    <option value="napa">
+                      Napa Valley Unified School District
+                    </option>
+                    <option value="novato">
+                      Novato Unified School District
                     </option>
                     <option value="oakland">
                       Oakland Unified School District
                     </option>
-                    <option value="piedmont">
-                      Piedmont Unified School District
+                    <option value="paloalto">
+                      Palo Alto Unified School District
                     </option>
                     <option value="pleasanton">
                       Pleasanton Unified School District
                     </option>
-                    <option value="sanleandro">
-                      San Leandro Unified School District
+                    <option value="riverdelta">
+                      River Delta Unified School District
                     </option>
-                    <option value="sanlorenzo">
-                      San Lorenzo Unified School District
+                    <option value="sainthelena">
+                      Saint Helena Unified School District
                     </option>
                     <option value="sanfrancisco">
                       San Francisco Unified School District
                     </option>
-                    <option value="sanjose">
-                      San Jose Unified School District
+                    <option value="santaclara">
+                      Santa Clara Unified School District
+                    </option>
+                    <option value="shoreline">
+                      Shoreline Unified School District
+                    </option>
+                    <option value="sonoma">
+                      Sonoma Valley Unified School District
+                    </option>
+                    <option value="southsf">
+                      South San Francisco Unified School District
+                    </option>
+                    <option value="vallejo">
+                      Vallejo City Unified School District
+                    </option>
+                    <option value="westcontra">
+                      West Contra Costa Unified School District
+                    </option>
+                    <option value="windsor">
+                      Windsor Unified School District
                     </option>
                     <option value="other">Other</option>
                   </select>
@@ -1014,19 +1044,52 @@
                 </div>
                 <div class="col-md-6">
                   <label for="schoolName" class="form-label"
-                    >School Name (Optional)</label
+                    >School Name <span class="text-danger">*</span></label
                   >
                   <input
                     type="text"
                     class="form-control"
                     id="schoolName"
+                    required
                     placeholder="Enter your school name"
                   />
+                  <div class="invalid-feedback">
+                    Please enter your school name.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="gradeLevel" class="form-label"
+                    >Grade Level <span class="text-danger">*</span></label
+                  >
+                  <select class="form-select" id="gradeLevel" required>
+                    <option value="">Select Grade Level</option>
+                    <optgroup label="Elementary School">
+                      <option value="K">Kindergarten</option>
+                      <option value="1">1st Grade</option>
+                      <option value="2">2nd Grade</option>
+                      <option value="3">3rd Grade</option>
+                      <option value="4">4th Grade</option>
+                      <option value="5">5th Grade</option>
+                    </optgroup>
+                    <optgroup label="Middle School">
+                      <option value="6">6th Grade</option>
+                      <option value="7">7th Grade</option>
+                      <option value="8">8th Grade</option>
+                    </optgroup>
+                    <optgroup label="High School">
+                      <option value="9">9th Grade (Freshman)</option>
+                      <option value="10">10th Grade (Sophomore)</option>
+                      <option value="11">11th Grade (Junior)</option>
+                      <option value="12">12th Grade (Senior)</option>
+                    </optgroup>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select your grade level.
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label for="cityNeighborhood" class="form-label"
-                    >City or Neighborhood
-                    <span class="text-danger">*</span></label
+                    >City/Neighborhood <span class="text-danger">*</span></label
                   >
                   <input
                     type="text"
